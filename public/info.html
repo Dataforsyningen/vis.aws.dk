@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="AWS Suitens Vis">
+    <meta name="author" content="Finn Jordal">
+
+    <title>AWS Suitens Vis</title>
+
+    <link href="/css/vis.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+    <h1>vis.aws.dk</h1>
+    <p>Vis.aws.dk websitet præsenterer geografiske data fra <a href='http://dawa.aws.dk'>DAWA</a> på kort. Når man arbejder med DAWA kan det ofte give en bedre forståelse for data, hvis man ser dem på et kort. Til dette har vi udviklet Vis websitet. Alle data fra DAWA som indeholder geografiske data kan præsenteres på et kort via vis.aws.dk. </p>
+    <h2>Brug</h2>
+    <p>For at kunne bruge Vis skal du angive hvilke data fra DAWA, du ønsker præsenteret. Angivelsen af hvilke data du ønsker sker på samme måde som i DAWA. Hvis du f.eks. ønsker data fra DAWA om det nye postnummer i Nordhavn anvender du <a href='http://dawa.aws.dk/postnumre/2150'>http://dawa.aws.dk/postnumre/2150</a>. Hvis du vil have vist samme data på et kort erstatter du <em>dawa.aws.dk</em> med <em>vis.aws.dk</em> og får <a href='http://vis.aws.dk/postnumre/2150'>http://vis.aws.dk/postnumre/2150</a>.</p>
+    <p>Vis.aws.dk kan kun anvendes i de tilfælde, hvor DAWA returnerer GeoJSON. Du skal ikke angive GeoJSON formatet. Det sker automatisk.</p>
+    <h2>Eksempler</h2>
+    <h3>Adgangsadresser på Roskildevej</h3>
+    <p><a href='http://vis.aws.dk/adgangsadresser?vejnavn=Roskildevej'>http://vis.aws.dk/adgangsadresser?vejnavn=Roskildevej</a></p>
+    <h3>Frederiksberg postnumre</h3>
+    <p><a href='http://vis.aws.dk/postnumre?q=frederiksberg'>http://vis.aws.dk/postnumre?q=frederiksberg</a></p>
+    <h3>Adresser på 20. etage</h3>
+    <p><a href='http://vis.aws.dk/adresser?etage=20'>http://vis.aws.dk/adresser?etage=20</a></p>
+    <br/>
+    <p><a href='http://aws.dk'>AWS Suiten</a></p>
+
+   <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-39392352-12', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+  
+  </body>
+
+</html>

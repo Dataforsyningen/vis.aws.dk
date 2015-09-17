@@ -1,0 +1,21 @@
+{
+  "name": "VisDawa",
+  "version": "0.0.0-10",
+  "description": "Vis DAWA responses på kort",
+  "main": "app.js",
+  "author": "Finn Jordal",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.1"
+  },
+  "subdomain": "vis",
+  "domains": [
+    "vis.aws.dk"
+  ],
+  "engines": {
+    "node": "0.10.x"
+  },
+  "scripts": {
+    "start": "node app.js"
+  }
+}
