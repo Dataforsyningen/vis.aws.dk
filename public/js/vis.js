@@ -72,7 +72,7 @@ $(function() {
     })
     .then( function ( inddeling ) {
       map = L.map('map',{zoom: 13});
-      var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '<a href="' + url + (url.indexOf('?')===-1?'?':'&') + 'format=geojson">Data</a> fra <a href="http://dawa.aws.dk">DAWA</a> &copy; Geodatastyrelsen &copy; MBBL | Map data &copy; OpenStreetMap contributors'});
+      var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '<a href="' + url + (url.indexOf('?')===-1?'?':'&') + 'format=geojson">Data</a> fra <a href="http://dawa.aws.dk">DAWA</a> &copy; Styrelsen for Dataforsyning og Effektivisering | Map data &copy; OpenStreetMap contributors'});
       osm.addTo(map);
       var geojsonlayer= L.geoJson(inddeling, {style: getStyle, onEachFeature: eachFeature, pointToLayer: pointToLayer});
       lag[url]= geojsonlayer;
