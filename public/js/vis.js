@@ -22,7 +22,7 @@ $(function() {
 
   var linestyle = {
       "color": "blue",
-      "weight": 1,
+      "weight": 2,
       "fillOpacity": 0.2
   };
 
