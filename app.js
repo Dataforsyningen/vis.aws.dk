@@ -1,4 +1,6 @@
-var express = require('express');
+var express = require('express')
+  , rp = require('request-promise');
+
 var app = express();
 
 app.use(express.static(__dirname + '/public'));
@@ -15,8 +17,42 @@ app.get('/', function (req, res) {
   });
 });
 
+function getTicket(usr,pw) {
+  return new Promise((resolve, reject) => {
+    var options= {};
+    options.url='http://kortforsyningen.kms.dk/service';
+    options.qs= {};
+    options.qs.service= 'META';
+    options.qs.request= 'GetTicket';
+    options.qs.login= usr;
+    options.qs.password= pw;
+    //options.resolveWithFullResponse= true;
+    var jsonrequest= rp(options).then((body) => {    
+      console.log('getticket: %s, %d', body, body.length);
+      if (body.length === 32) { // returnerer en status 200 ved ukendt username/password?!
+        resolve(body);
+      }
+      else {
+        reject('Ukendt username/password');
+      }
+    })
+    .catch((err) => {
+      reject('fejl i request af kortforsyningen: ' + err);
+    });
+  });
+}
+
+app.get('/getticket', function (req, res, next) { 
+  getTicket(usr,pw).then((ticket) => {
+    res.status(200).send(ticket);
+  })
+  .catch((err) => {
+    res.status(400).send('Ukendt username og password: ' + err);
+  });
+}); 
+
 app.get(/.+/, function (req, res) {
-  console.log('get /.*');
+  //console.log(req);
   res.sendFile(__dirname + "/public/vis.html", function (err) {
     if (err) {
       console.log('fejl: ' + err);
@@ -27,9 +63,22 @@ app.get(/.+/, function (req, res) {
   });
 }); 
 
-var server = app.listen(3000, function () {
-  var host = server.address().address;
-  var port = server.address().port;
+if (!(process.argv[2] && process.argv[3])) {
+  console.log("node app.js <username> <password>");
+  return;
+}
 
-  console.log('URL http://%s:%s', host, port);
-});
+var usr= process.argv[2]
+  , pw= process.argv[3];
+
+getTicket(usr,pw).then(ticket => {
+  var server = app.listen(3000, function () {
+    var host = server.address().address;
+    var port = server.address().port;
+
+    console.log('URL http://%s:%s', host, port);
+  });
+})
+.catch(err => {
+  console.log("Ukendt username og password (%s)",err);
+})

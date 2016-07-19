@@ -6,7 +6,8 @@
   "author": "Finn Jordal",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.13.1"
+    "express": "^4.13.1",
+    "request-promise": "^3.0.0"
   },
   "subdomain": "vis",
   "domains": [
