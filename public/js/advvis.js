@@ -3,12 +3,15 @@ var lag= {};
 
 $(function() {
 
- var parser = document.createElement('a');
+  var parser = document.createElement('a');
   parser.href = window.location.href;
   parser.host= 'dawa.aws.dk:80'; 
-  var dataurl= parser.href; 
+  var dataurl= parser.href;
 
-  var visData= function() {
+  var værdi= getQueryVariable('lag');
+  console.log('lag: %s', værdi); 
+
+  var visData= function(dataurl) {
     var parametre= {format: 'geojson'};    
     //var parametre= {};    
     $.ajax({
@@ -34,7 +37,7 @@ $(function() {
   .then( function ( ticket ) {
     //visOSMKort(ticket);
     visKort(ticket);
-    visData();
+    visData(værdi);
   })
   .fail(function( jqXHR, textStatus, errorThrown ) {
     alert('Ingen ticket: ' + jqXHR.statusCode() + ", " + textStatus + ", " + jqXHR.responseText);

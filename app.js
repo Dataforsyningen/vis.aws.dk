@@ -51,6 +51,18 @@ app.get('/getticket', function (req, res, next) {
   });
 }); 
 
+app.get('/advvis', function (req, res) {
+  //console.log(req);
+  res.sendFile(__dirname + "/public/advvis.html", function (err) {
+    if (err) {
+      console.log('fejl: ' + err);
+    }
+    else {
+      console.log('Sent: advvis.html');
+    }
+  });
+}); 
+
 app.get(/.+/, function (req, res) {
   //console.log(req);
   res.sendFile(__dirname + "/public/vis.html", function (err) {
