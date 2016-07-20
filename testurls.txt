@@ -1,1 +1,3 @@
 http://localhost:3000/advvis?lag=http://dawa.aws.dk/postnumre/2400
+http://localhost:3000/advvis?lag=http://dawa.aws.dk/postnumre/2400@http://dawa.aws.dk/adresser?q=rødkildevej 46,2400 -> http://localhost:3000/advvis?lag=http%3A%2F%2Fdawa.aws.dk%2Fpostnumre%2F2400%40http%3A%2F%2Fdawa.aws.dk%2Fadresser%3Fq%3Dr%C3%B8dkildevej%2046%2C2400
+http://localhost:3000/advvis?lag=http://dawa.aws.dk/vejstykker?navn=Ugledigevej@http://dawa.aws.dk/adresser?vejnavn=Ugledigevej -> http://localhost:3000/advvis?lag=http%3A%2F%2Fdawa.aws.dk%2Fvejstykker%3Fnavn%3DUgledigevej%40http%3A%2F%2Fdawa.aws.dk%2Fadresser%3Fvejnavn%3DUgledigevej

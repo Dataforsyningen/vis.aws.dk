@@ -1,3 +1,5 @@
+var map;
+
 function corssupported() {
   return "withCredentials" in (new XMLHttpRequest());
 }
@@ -133,8 +135,8 @@ var visKort= function (ticket) {
   });
 }	
 
-var visOSMKort= function() {
-  map = L.map('map',{zoom: 13});
-  var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Data</a> fra <a href="http://dawa.aws.dk">DAWA</a> | Map data &copy;  Styrelsen for Dataforsyning og Effektivisering'});
-  osm.addTo(map);
-}
+// var visOSMKort= function() {
+//   map = L.map('map',{zoom: 13});
+//   var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Data</a> fra <a href="http://dawa.aws.dk">DAWA</a> | Map data &copy;  Styrelsen for Dataforsyning og Effektivisering'});
+//   osm.addTo(map);
+// }
