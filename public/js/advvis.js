@@ -1,34 +1,4 @@
-var lag= {};
-
-
 $(function() {
-
-  var parser = document.createElement('a');
-  parser.href = window.location.href;
-  parser.host= 'dawa.aws.dk:80'; 
-  var dataurl= parser.href;
-
-  var værdi= getQueryVariable('lag');
-  console.log('lag: %s', værdi); 
-
-  var visData= function(dataurl) {
-    var parametre= {format: 'geojson'};    
-    //var parametre= {};    
-    $.ajax({
-        url: dataurl,
-        dataType: corssupported()?"json":"jsonp",
-        data: parametre
-    })
-    .then( function ( inddeling ) {
-      var geojsonlayer= L.geoJson(inddeling, {style: getStyle, onEachFeature: eachFeature, pointToLayer: pointToLayer});
-      lag[dataurl]= geojsonlayer;
-      geojsonlayer.addTo(map);
-      map.fitBounds(geojsonlayer.getBounds());
-    })
-    .fail(function( jqXHR, textStatus, errorThrown ) {
-      alert(jqXHR.responseText);
-    });
-  }  
 
   var ticketurl= '/getticket';
   $.ajax({
@@ -37,11 +7,41 @@ $(function() {
   .then( function ( ticket ) {
     //visOSMKort(ticket);
     visKort(ticket);
-    visData(værdi);
+    visData();
   })
   .fail(function( jqXHR, textStatus, errorThrown ) {
     alert('Ingen ticket: ' + jqXHR.statusCode() + ", " + textStatus + ", " + jqXHR.responseText);
   }); 
+
+  var visData= function() {
+    var værdi= getQueryVariable('lag');
+    værdi= decodeURIComponent(værdi);
+    console.log('lag: %s', værdi); 
+
+    var urls= værdi.split('@');
+
+    var promises = [];
+    for (var i = 0; i < urls.length; i++) {
+      console.log(urls[i]);
+      var parametre= {format: 'geojson'};
+      var datatype=  corssupported()?"json":"jsonp";
+      promises.push($.ajax({url: urls[i], dataType: datatype, data: parametre}));
+    };
+    $.when.apply($, promises).then(function() {
+      var layers = [];
+      for (var i = 0; i < arguments.length; i++) {
+        var geojsonlayer= L.geoJson(arguments[i], {style: getStyle, onEachFeature: eachFeature, pointToLayer: pointToLayer});
+        layers.push(geojsonlayer);
+        geojsonlayer.addTo(map);
+      } 
+      var layergroup= L.featureGroup(layers);     
+      map.fitBounds(layergroup.getBounds());
+    }, function() {
+      for (var i = 0; i < arguments.length; i++) {
+        alert(arguments[i]);
+      }
+    });
+  }
 
   var pointstyle = {
     "color": "red",
