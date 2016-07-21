@@ -16,21 +16,28 @@ $(function() {
   var visData= function() {
     var værdi= getQueryVariable('lag');
     værdi= decodeURIComponent(værdi);
-    console.log('lag: %s', værdi); 
+    console.log('værdi: %s', værdi); 
 
-    var urls= værdi.split('@');
+    var lag= værdi.split('@');
 
-    var promises = [];
-    for (var i = 0; i < urls.length; i++) {
-      console.log(urls[i]);
+    var promises = []
+      , urls= []
+      , styles= [];
+    for (let i = 0; i < lag.length; i++) {
+      console.log(lag[i]);
+      var laget= lag[i].split('$');
+      urls[i]= laget[0];
+      styles[i]= laget.length>1?laget[1]:"{}";
       var parametre= {format: 'geojson'};
       var datatype=  corssupported()?"json":"jsonp";
       promises.push($.ajax({url: urls[i], dataType: datatype, data: parametre}));
     };
     $.when.apply($, promises).then(function() {
       var layers = [];
-      for (var i = 0; i < arguments.length; i++) {
-        var geojsonlayer= L.geoJson(arguments[i], {style: getStyle, onEachFeature: eachFeature, pointToLayer: pointToLayer});
+      for (let i = 0; i < arguments.length; i++) {
+        console.log(styles[i]);
+        var style= JSON.parse(styles[i]);
+        var geojsonlayer= L.geoJson(arguments[i], {style: getStyle(style), onEachFeature: eachFeature, pointToLayer: pointToLayer});
         layers.push(geojsonlayer);
         geojsonlayer.addTo(map);
       } 
@@ -44,11 +51,11 @@ $(function() {
   }
 
   var pointstyle = {
+    "stroke": false, 
     "color": "red",
     "fillColor": 'red',
     "fillOpacity": 1.,
     "opacity": 1.0,
-    "stroke": false, 
     "radius": 5
   };
 
@@ -80,15 +87,21 @@ $(function() {
     return L.circleMarker(latlng, pointstyle);
   }
 
-  var getStyle= function(featureData) {
-    var style;
-    if (featureData.geometry.type==='Point') {
-      style= pointstyle;
+  function getStyle(style) {
+    return function(featureData) {
+      var defaultstyle;
+      if (featureData.geometry.type==='Point') {
+        defaultstyle= pointstyle;
+      }
+      else {
+        defaultstyle= linestyle;
+      }
+      var keys= Object.keys(style);
+      for (let i= 0; i<keys.length; i++) {
+        defaultstyle[keys[i]]= style[keys[i]];
+      }
+      return defaultstyle;
     }
-    else {
-      style= linestyle;
-    }
-    return style;
   }
 
 });

@@ -15,6 +15,42 @@ function getQueryVariable(variable) {
   }
 }
 
+
+      function visKommune (e) {
+        var parametre= {};
+        parametre.x= e.latlng.lng; 
+        parametre.y= e.latlng.lat; 
+        $.ajax({
+          url: "http://dawa.aws.dk/kommuner/reverse",
+          data: parametre,
+          datatype:  corssupported()?"json":"jsonp"
+        })
+        .then( function ( kommune ) {
+          var popup = L.popup()
+          .setLatLng(e.latlng)
+          .setContent('<p>Kommune<br/>' + kommune.kode + ' ' + kommune.navn + '</p>')
+          .openOn(map);
+        })
+        .fail(function( jqXHR, textStatus, errorThrown ) {
+          alert('Ingen kommune: ' + jqXHR.statusCode() + ", " + textStatus + ", " + jqXHR.responseText);
+        }); 
+      }
+
+      function showCoordinates (e) {
+        alert(e.latlng);
+      }
+
+      function centerMap (e) {
+        map.panTo(e.latlng);
+      }
+
+      function zoomIn (e) {
+        map.zoomIn();
+      }
+
+      function zoomOut (e) {
+        map.zoomOut();
+      }
   
 var visKort= function (ticket) {
   var crs = new L.Proj.CRS.TMS('EPSG:25832',
@@ -22,7 +58,22 @@ var visKort= function (ticket) {
           resolutions: [1638.4, 819.2, 409.6, 204.8, 102.4, 51.2, 25.6, 12.8, 6.4, 3.2, 1.6, 0.8, 0.4, 0.2, 0.1]
       });
   map = new L.Map('map', {
-      crs: crs
+      crs: crs,
+        contextmenu: true,
+        contextmenuWidth: 140,
+        contextmenuItems: [{
+          text: 'Kommune?',
+          callback: visKommune
+        }, {
+          text: 'Center map here',
+          callback: centerMap
+        }, '-', {
+          text: 'Zoom in',
+          callback: zoomIn
+        }, {
+          text: 'Zoom out',
+          callback: zoomOut
+        }]     
   });
 
   var matrikelkort = L.tileLayer.wms('http://{s}.services.kortforsyningen.dk/service', {
