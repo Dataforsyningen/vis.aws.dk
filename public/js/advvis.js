@@ -34,10 +34,10 @@ $(function() {
     };
     $.when.apply($, promises).then(function() {
       var layers = [];
-      for (let i = 0; i < arguments.length; i++) {
+      for (let i = 0; i < promises.length; i++) {
         console.log(styles[i]);
         var style= JSON.parse(styles[i]);
-        var geojsonlayer= L.geoJson(arguments[i], {style: getStyle(style), onEachFeature: eachFeature, pointToLayer: pointToLayer});
+        var geojsonlayer= L.geoJson(arguments[i], {style: getStyle(style), onEachFeature: eachFeature, pointToLayer: pointToLayer(style.husnr)});
         layers.push(geojsonlayer);
         geojsonlayer.addTo(map);
       } 
@@ -83,8 +83,15 @@ $(function() {
     }
   }
 
-  var pointToLayer= function(featureData, latlng) {
-    return L.circleMarker(latlng, pointstyle);
+  function pointToLayer(husnr) {
+    return function(feature, latlng) {
+      if (husnr) {
+        return L.marker(latlng, {icon: L.divIcon({className: "labelClass", html: feature.properties.husnr})});
+      }
+      else {
+        return L.circleMarker(latlng, pointstyle);
+      }
+    }
   }
 
   function getStyle(style) {
