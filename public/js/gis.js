@@ -20,12 +20,14 @@ $(function() {
 
   $('#layers').dropdown();
   $("#urls").on("click", "li", function(event){
-    alert("You clicked the drop downs: "+this.innerText); 
-    $('#url').val(this.innerText);
+    var url= this.innerText.trim();
+    $('#url').val(url);
+    $('#linjefarve').val(layers[url].style.color);
   })
 
   var pointstyle = jQuery.extend({}, defaultpointstyle); 
   var linestyle = jQuery.extend({}, defaultlinestyle);
+  var style= jQuery.extend(pointstyle, linestyle);
 
   $('#linjefarve').val(linestyle.color);
   $('#linjefarve').on('change', function() {
@@ -40,14 +42,12 @@ $(function() {
 
   function vis(event) {
     event.preventDefault();
-    var url= $('#url').val();
+    var url= $('#url').val().trim();
     if (layers[url]) return;
     var parametre= {format: 'geojson'};
-    var u= "http://dawa.aws.dk/" + url;
-    console.log(u);    
     //var parametre= {};    
     $.ajax({
-        url: u,
+        url: "http://dawa.aws.dk/" + url,
         dataType: "json",
         data: parametre
     })
@@ -61,7 +61,7 @@ $(function() {
         var info= $("#urls");
         info.append("<li><a href='#'>"+url+"</a></li>");
       };
-      layers[url]= {layer: geojsonlayer, style: getStyle({})};;   
+      layers[url]= {layer: geojsonlayer, style: style};;   
       geojsonlayer.addTo(map);
       map.fitBounds(geojsonlayer.getBounds())
     })

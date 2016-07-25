@@ -16,7 +16,7 @@ function getQueryVariable(variable) {
 }
 
 var defaultpointstyle = {
-  "stroke": false, 
+  "stroke": true, 
   "color": "red",
   "fillColor": 'red',
   "fillOpacity": 1.,
