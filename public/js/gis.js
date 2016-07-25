@@ -1,6 +1,6 @@
 $(function() {
 
-  var layers= [];
+  var layers= {};
 
   var ticketurl= '/getticket';
   $.ajax({
@@ -16,24 +16,52 @@ $(function() {
   })
   .fail(function( jqXHR, textStatus, errorThrown ) {
     alert('Ingen ticket: ' + jqXHR.statusCode() + ", " + textStatus + ", " + jqXHR.responseText);
-  }); 
+  });
 
+  $('#layers').dropdown();
+  $("#urls").on("click", "li", function(event){
+    alert("You clicked the drop downs: "+this.innerText); 
+    $('#url').val(this.innerText);
+  })
 
-   $('#vis').on("click", vis);
+  var pointstyle = jQuery.extend({}, defaultpointstyle); 
+  var linestyle = jQuery.extend({}, defaultlinestyle);
+
+  $('#linjefarve').val(linestyle.color);
+  $('#linjefarve').on('change', function() {
+    linestyle.color= this.value;   
+    var url= $('#url').val();
+    layers[url].style.color= this.value;
+    layers[url].layer.setStyle(layers[url].style);
+  });
+
+  $('#vis').on("click", vis);
+  $('#fjern').on("click", fjern);
 
   function vis(event) {
     event.preventDefault();
     var url= $('#url').val();
-    var parametre= {format: 'geojson'};    
+    if (layers[url]) return;
+    var parametre= {format: 'geojson'};
+    var u= "http://dawa.aws.dk/" + url;
+    console.log(u);    
     //var parametre= {};    
     $.ajax({
-        url: url,
+        url: u,
         dataType: "json",
         data: parametre
     })
     .then( function ( inddeling ) {
+      if (inddeling.features.length === 0) {
+        alert('Søgning gav intet resultat');
+        return;
+      }
       var geojsonlayer= L.geoJson(inddeling, {style: getStyle({}), onEachFeature: eachFeature, pointToLayer: pointToLayer(false)});
-      layers[url]= geojsonlayer;
+      if (!layers[url]) {
+        var info= $("#urls");
+        info.append("<li><a href='#'>"+url+"</a></li>");
+      };
+      layers[url]= {layer: geojsonlayer, style: getStyle({})};;   
       geojsonlayer.addTo(map);
       map.fitBounds(geojsonlayer.getBounds())
     })
@@ -42,20 +70,15 @@ $(function() {
     });
   };
 
-  var pointstyle = {
-    "stroke": false, 
-    "color": "red",
-    "fillColor": 'red',
-    "fillOpacity": 1.,
-    "opacity": 1.0,
-    "radius": 5
+  function fjern(event) {
+    event.preventDefault(); 
+    var url= $('#url').val();
+    map.removeLayer(layers[url].layer);
+    var urls= $('#urls li:contains("' + url + '")');
+    urls.remove();
+    delete layers[url];  
   };
 
-  var linestyle = {
-    "color": "blue",
-    "weight": 2,
-    "fillOpacity": 0.2
-  };
 
   var eachFeature= function (feature, layer) {
     if ("ejerlavkode" in feature.properties && "matrikelnr" in feature.properties && !("vejnavn" in feature.properties)) {      

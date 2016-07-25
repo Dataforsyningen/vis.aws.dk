@@ -31,8 +31,8 @@
     <![endif]-->
 
 
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-   <!--  <link rel="stylesheet" href="https://npmcdn.com/leaflet@0.7.7/dist/leaflet.css" /> -->
+   <!--  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />-->
+    <link rel="stylesheet" href="https://npmcdn.com/leaflet@0.7.7/dist/leaflet.css" /> 
     <link href="/css/leaflet.contextmenu.min.css" rel="stylesheet">
   </head>
 
@@ -47,12 +47,16 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">DAWA GIS</a>
+          <a class="navbar-brand" href="#">DAWA Vis</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-right">
-            <input id="url" type="text" class="form-control" placeholder="GeoJSON URL">
-            <button type="submit" id="vis" class="form-control">Vis</button>              
+            <div class="input-group">
+              <div class="input-group-addon">http://dawa.aws.dk/</div>
+              <input id="url" type="text" class="form-control" placeholder="DAWA URL">
+            </div>
+            <button type="submit" id="vis" class="form-control">Vis</button>         
+            <button type="submit" id="fjern" class="form-control">Fjern</button>             
           </form>
         </div>
       </div>
@@ -61,20 +65,28 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-            <h2>Testing</h2>
-          <!--  <form id='form' class="navbar-form navbar-right"> 
-              <label class="control-label navbarlabel">Punkt:</label>
+            <div class="dropdown">
+              <button id="layers" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Lag
+                <span class="caret"></span>
+              </button>
+              <ul id="urls" class="dropdown-menu" aria-labelledby="dropdownMenu1">
+              </ul>
+            </div>
+            <h3>Linje</h3>
+            <form id='form'> 
               <div class="form-group"> <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <select class="form-control">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
+                <label for="linjefarve">Farve</label><br/>
+                <select id="linjefarve" class="form-control">
+                  <option value='blue' selected='selected'>Blue</option>
+                  <option value='green'>Green</option>
+                  <option value='yellow'>Yellow</option>
+                  <option value='red'>Red</option>
                 </select>
               </div>
-                 <button id='punkttransparentbtn' class="btn">Farve</button>
+            </form>
+          </div>
+           <!--      <button id='punkttransparentbtn' class="btn">Farve</button>
                 <button class="btn dropdown-toggle" data-toggle="dropdown">
                   <span class="caret"></span>
                 </button>
@@ -184,13 +196,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
     <script>window.jQuery || document.write('<script src="/js/vendor/jquery.min.js"><\/script>')</script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/dropdown.js"></script>
     <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
     <!-- <script src="/js/holder.min.js"></script> -->
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="/js/ie10-viewport-bug-workaround.js"></script>
 
-    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script> 
-    <!-- <script src="https://npmcdn.com/leaflet@0.7.7/dist/leaflet.js"></script>-->
+    <!--<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>--> 
+     <script src="https://npmcdn.com/leaflet@0.7.7/dist/leaflet.js"></script>
     <script src="/js/proj4-compressed.js"></script>
     <script src="/js/proj4leaflet.js"></script>
     <script src="/js/leaflet.contextmenu.min.js"></script>

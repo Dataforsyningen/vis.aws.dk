@@ -15,42 +15,57 @@ function getQueryVariable(variable) {
   }
 }
 
+var defaultpointstyle = {
+  "stroke": false, 
+  "color": "red",
+  "fillColor": 'red',
+  "fillOpacity": 1.,
+  "opacity": 1.0,
+  "radius": 5
+};
 
-      function visKommune (e) {
-        var parametre= {};
-        parametre.x= e.latlng.lng; 
-        parametre.y= e.latlng.lat; 
-        $.ajax({
-          url: "http://dawa.aws.dk/kommuner/reverse",
-          data: parametre,
-          datatype:  corssupported()?"json":"jsonp"
-        })
-        .then( function ( kommune ) {
-          var popup = L.popup()
-          .setLatLng(e.latlng)
-          .setContent('<p>Kommune<br/>' + kommune.kode + ' ' + kommune.navn + '</p>')
-          .openOn(map);
-        })
-        .fail(function( jqXHR, textStatus, errorThrown ) {
-          alert('Ingen kommune: ' + jqXHR.statusCode() + ", " + textStatus + ", " + jqXHR.responseText);
-        }); 
-      }
+var defaultlinestyle = {
+  "color": "blue",
+  "weight": 2,
+  "fillOpacity": 0.2
+};
 
-      function showCoordinates (e) {
-        alert(e.latlng);
-      }
 
-      function centerMap (e) {
-        map.panTo(e.latlng);
-      }
+function visKommune (e) {
+  var parametre= {};
+  parametre.x= e.latlng.lng; 
+  parametre.y= e.latlng.lat; 
+  $.ajax({
+    url: "http://dawa.aws.dk/kommuner/reverse",
+    data: parametre,
+    datatype:  corssupported()?"json":"jsonp"
+  })
+  .then( function ( kommune ) {
+    var popup = L.popup()
+    .setLatLng(e.latlng)
+    .setContent('<p>Kommune<br/>' + kommune.kode + ' ' + kommune.navn + '</p>')
+    .openOn(map);
+  })
+  .fail(function( jqXHR, textStatus, errorThrown ) {
+    alert('Ingen kommune: ' + jqXHR.statusCode() + ", " + textStatus + ", " + jqXHR.responseText);
+  }); 
+}
 
-      function zoomIn (e) {
-        map.zoomIn();
-      }
+function showCoordinates (e) {
+  alert(e.latlng);
+}
 
-      function zoomOut (e) {
-        map.zoomOut();
-      }
+function centerMap (e) {
+  map.panTo(e.latlng);
+}
+
+function zoomIn (e) {
+  map.zoomIn();
+}
+
+function zoomOut (e) {
+  map.zoomOut();
+}
   
 var visKort= function (ticket) {
   var crs = new L.Proj.CRS.TMS('EPSG:25832',
