@@ -129,17 +129,17 @@ $(function() {
         data: parametre
     })
     .then( function ( data ) {
-      if (data.features.length === 0) {
+      if (data.geometri || data.features && data.features.length === 0) {
         alert('Søgning gav intet resultat');
         return;
       }
-      style=  getDefaultStyle(data.features[0]);
+      style=  getDefaultStyle(getFeature(data));
       var geojsonlayer= L.geoJson(data, {style: getDefaultStyle, onEachFeature: eachFeature, pointToLayer: pointToLayer(style)});
       if (!layers[url]) {
         var info= $("#urls");
         info.append("<li><a href='#'>"+url+"</a></li>");
       };
-      layers[url]= {layer: geojsonlayer, style: style, data: data};; 
+      layers[url]= {layer: geojsonlayer, style: jQuery.extend({}, style), data: data};; 
       setStyle(style);  
       geojsonlayer.addTo(map);
       map.fitBounds(geojsonlayer.getBounds())
@@ -148,6 +148,16 @@ $(function() {
       alert(errorThrown)
     });
   };
+
+  function getFeature(data) {
+    if (data.type === 'Feature') {
+      return data;
+    }
+    else if (data.type === 'FeatureCollection') {
+      return data.features[0];
+    }
+    return data;
+  }
 
   function fjern(event) {
     event.preventDefault(); 

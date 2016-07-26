@@ -34,7 +34,7 @@ var defaultlinestyle = {
   "opacity": 1.0,
   "weight": 2, 
   "fill": true,
-  "fillColor": 'red',
+  "fillColor": 'blue',
   "fillOpacity": 0.2,
   "husnr": false, 
   "radius": 5
