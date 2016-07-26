@@ -16,8 +16,9 @@ $(function() {
         dataType: corssupported()?"json":"jsonp",
         data: parametre
     })
-    .then( function ( inddeling ) {
-      var geojsonlayer= L.geoJson(inddeling, {style: getStyle, onEachFeature: eachFeature, pointToLayer: pointToLayer});
+    .then( function ( data ) {
+      var style=  getDefaultStyle(data.features[0]);
+      var geojsonlayer= L.geoJson(data, {style: getDefaultStyle, onEachFeature: eachFeature, pointToLayer: pointToLayer(style)});
       lag[dataurl]= geojsonlayer;
       geojsonlayer.addTo(map);
       map.fitBounds(geojsonlayer.getBounds());
@@ -40,52 +41,5 @@ $(function() {
     alert('Ingen ticket: ' + jqXHR.statusCode() + ", " + textStatus + ", " + jqXHR.responseText);
   }); 
 
-  var pointstyle = {
-    "color": "red",
-    "fillColor": 'red',
-    "fillOpacity": 1.,
-    "opacity": 1.0,
-    "stroke": false, 
-    "radius": 5
-  };
-
-  var linestyle = {
-    "color": "blue",
-    "weight": 2,
-    "fillOpacity": 0.2
-  };
-
-  var eachFeature= function (feature, layer) {
-    if ("ejerlavkode" in feature.properties && "matrikelnr" in feature.properties && !("vejnavn" in feature.properties)) {      
-      layer.bindPopup("Jordstykke: " + feature.properties.ejerlavkode + " " + feature.properties.matrikelnr);
-    }
-    else if ("type" in feature.properties && "navn" in feature.properties) {  
-      layer.bindPopup(feature.properties.navn + " (" + feature.properties.type + ")");
-    }
-    else if ("kode" in feature.properties && "navn" in feature.properties) {  
-      layer.bindPopup(feature.properties.kode + " " + feature.properties.navn);
-    }
-     else if ("nr" in feature.properties && "navn" in feature.properties) {  
-      layer.bindPopup(feature.properties.nr + " " + feature.properties.navn);
-    }
-    else if ("vejnavn" in feature.properties && "husnr" in feature.properties) {  
-      layer.bindPopup(feature.properties.vejnavn + " " + feature.properties.husnr + ", " + (feature.properties.supplerendebynavn?feature.properties.supplerendebynavn+", ":"") + feature.properties.postnr + " " + feature.properties.postnrnavn);
-    }
-  }
-
-  var pointToLayer= function(featureData, latlng) {
-    return L.circleMarker(latlng, pointstyle);
-  }
-
-  var getStyle= function(featureData) {
-    var style;
-    if (featureData.geometry.type==='Point') {
-      style= pointstyle;
-    }
-    else {
-      style= linestyle;
-    }
-    return style;
-  }
-
+  
 });

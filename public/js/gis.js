@@ -22,25 +22,102 @@ $(function() {
   $("#urls").on("click", "li", function(event){
     var url= this.innerText.trim();
     $('#url').val(url);
-    $('#linjefarve').val(layers[url].style.color);
+    setStyle(layers[url].style);
   })
 
-  var pointstyle = jQuery.extend({}, defaultpointstyle); 
-  var linestyle = jQuery.extend({}, defaultlinestyle);
-  var style= jQuery.extend(pointstyle, linestyle);
+  $("#danwebside").on("click", function(event){
+    var url= "http://localhost:3000/advvis?lag=";
+    var keys= Object.keys(layers);
+    var value= "";
+    for (var i= 0; i<keys.length; i++) {
+      var element= "http://dawa.aws.dk/"+keys[i]+"$"+JSON.stringify(layers[keys[i]].style);
+      if (i<keys.length-1) element= element+"@";
+      value= value+element;
+    }
+    url= url+encodeURIComponent(value);
+    window.open(url);
+  })
 
-  $('#linjefarve').val(linestyle.color);
+  var style= defaultpointstyle;
+
+  function setStyle(style) {
+    $('#linjevises').prop('checked', style.stroke);
+    $('#linjefarve').val(style.color);
+    $('#linjetykkelse').val(style.weight);
+    $('#linjeopacitet').val(style.opacity);
+    $('#fyldvises').prop('checked', style.fill);
+    $('#fyldfarve').val(style.fillColor);
+    $('#fyldopacitet').val(style.fillOpacity);
+    $('#husnr').prop('checked', style.husnr);
+    $('#radius').val(style.radius);
+  }
+
+  function getStyle() { //skal den bruges?
+    var style= {};
+    style.stroke= $('#linjevises').is(':checked'); 
+  }
+
+  setStyle(style);
+
+  $('#linjevises').on('change', function() {
+    style.stroke= $('#linjevises').is(':checked');   
+    var url= $('#url').val();
+    layers[url].style.stroke= style.stroke;
+    layers[url].layer.setStyle(layers[url].style);
+  });
   $('#linjefarve').on('change', function() {
-    linestyle.color= this.value;   
+    style.color= this.value;   
     var url= $('#url').val();
     layers[url].style.color= this.value;
     layers[url].layer.setStyle(layers[url].style);
   });
+  $('#linjetykkelse').on('change', function() {
+    style.weight= this.value;   
+    var url= $('#url').val();
+    layers[url].style.weight= this.value;
+    layers[url].layer.setStyle(layers[url].style);
+  });
+  $('#linjeopacitet').on('change', function() {
+    style.opacity= this.value;   
+    var url= $('#url').val();
+    layers[url].style.opacity= this.value;
+    layers[url].layer.setStyle(layers[url].style);
+  });
+  $('#fyldvises').on('change', function() {
+    style.fill= $('#fyldvises').is(':checked');   
+    var url= $('#url').val();
+    layers[url].style.fil= style.fill;
+    layers[url].layer.setStyle(layers[url].style);
+  });
+  $('#fyldfarve').on('change', function() {
+    style.fillColor= this.value;   
+    var url= $('#url').val();
+    layers[url].style.fillColor= this.value;
+    layers[url].layer.setStyle(layers[url].style);
+  });
+  $('#fyldopacitet').on('change', function() {
+    style.fillOpacity= this.value;   
+    var url= $('#url').val();
+    layers[url].style.fillOpacity= this.value;
+    layers[url].layer.setStyle(layers[url].style);
+  });
+  $('#husnr').on('change', function() {
+    style.husnr= $('#husnr').is(':checked');   
+    var url= $('#url').val();
+    layers[url].style.husnr= style.husnr;
+    gentegn(layers[url]);
+  });
+  $('#radius').on('change', function() {
+    style.radius= this.value;   
+    var url= $('#url').val();
+    layers[url].style.radius= this.value;
+    gentegn(layers[url]);
+  });
 
-  $('#vis').on("click", vis);
+  $('#tilføj').on("click", tilføj);
   $('#fjern').on("click", fjern);
 
-  function vis(event) {
+  function tilføj(event) {
     event.preventDefault();
     var url= $('#url').val().trim();
     if (layers[url]) return;
@@ -51,17 +128,19 @@ $(function() {
         dataType: "json",
         data: parametre
     })
-    .then( function ( inddeling ) {
-      if (inddeling.features.length === 0) {
+    .then( function ( data ) {
+      if (data.features.length === 0) {
         alert('Søgning gav intet resultat');
         return;
       }
-      var geojsonlayer= L.geoJson(inddeling, {style: getStyle({}), onEachFeature: eachFeature, pointToLayer: pointToLayer(false)});
+      style=  getDefaultStyle(data.features[0]);
+      var geojsonlayer= L.geoJson(data, {style: getDefaultStyle, onEachFeature: eachFeature, pointToLayer: pointToLayer(style)});
       if (!layers[url]) {
         var info= $("#urls");
         info.append("<li><a href='#'>"+url+"</a></li>");
       };
-      layers[url]= {layer: geojsonlayer, style: style};;   
+      layers[url]= {layer: geojsonlayer, style: style, data: data};; 
+      setStyle(style);  
       geojsonlayer.addTo(map);
       map.fitBounds(geojsonlayer.getBounds())
     })
@@ -79,50 +158,12 @@ $(function() {
     delete layers[url];  
   };
 
-
-  var eachFeature= function (feature, layer) {
-    if ("ejerlavkode" in feature.properties && "matrikelnr" in feature.properties && !("vejnavn" in feature.properties)) {      
-      layer.bindPopup("Jordstykke: " + feature.properties.ejerlavkode + " " + feature.properties.matrikelnr);
-    }
-    else if ("type" in feature.properties && "navn" in feature.properties) {  
-      layer.bindPopup(feature.properties.navn + " (" + feature.properties.type + ")");
-    }
-    else if ("kode" in feature.properties && "navn" in feature.properties) {  
-      layer.bindPopup(feature.properties.kode + " " + feature.properties.navn);
-    }
-     else if ("nr" in feature.properties && "navn" in feature.properties) {  
-      layer.bindPopup(feature.properties.nr + " " + feature.properties.navn);
-    }
-    else if ("vejnavn" in feature.properties && "husnr" in feature.properties) {  
-      layer.bindPopup(feature.properties.vejnavn + " " + feature.properties.husnr + ", " + (feature.properties.supplerendebynavn?feature.properties.supplerendebynavn+", ":"") + feature.properties.postnr + " " + feature.properties.postnrnavn);
-    }
+  function gentegn(layer) {
+    map.removeLayer(layer.layer); 
+    var geojsonlayer= L.geoJson(layer.data, {style: style, onEachFeature: eachFeature, pointToLayer: pointToLayer(style)});
+    layer.layer= geojsonlayer;
+    geojsonlayer.addTo(map);
+    map.fitBounds(geojsonlayer.getBounds()) 
   }
-
-  function pointToLayer(husnr) {
-    return function(feature, latlng) {
-      if (husnr) {
-        return L.marker(latlng, {icon: L.divIcon({className: "labelClass", html: feature.properties.husnr})});
-      }
-      else {
-        return L.circleMarker(latlng, pointstyle);
-      }
-    }
-  }
-
-  function getStyle(style) {
-    return function(featureData) {
-      var defaultstyle;
-      if (featureData.geometry.type==='Point') {
-        defaultstyle= pointstyle;
-      }
-      else {
-        defaultstyle= linestyle;
-      }
-      var keys= Object.keys(style);
-      for (let i= 0; i<keys.length; i++) {
-        defaultstyle[keys[i]]= style[keys[i]];
-      }
-      return defaultstyle;
-    }
-  } 
+   
 });

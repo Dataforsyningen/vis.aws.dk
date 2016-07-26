@@ -16,19 +16,69 @@ function getQueryVariable(variable) {
 }
 
 var defaultpointstyle = {
-  "stroke": true, 
+  "stroke": false,
+  "husnr": false,
   "color": "red",
-  "fillColor": 'red',
-  "fillOpacity": 1.,
   "opacity": 1.0,
+  "weight": 1, 
+  "fill": true,
+  "fillColor": 'red',
+  "fillOpacity": 1.0,
+  "husnr": false,
   "radius": 5
 };
 
 var defaultlinestyle = {
+  "stroke": true,
   "color": "blue",
-  "weight": 2,
-  "fillOpacity": 0.2
+  "opacity": 1.0,
+  "weight": 2, 
+  "fill": true,
+  "fillColor": 'red',
+  "fillOpacity": 0.2,
+  "husnr": false, 
+  "radius": 5
 };
+
+var eachFeature= function (feature, layer) {
+    if ("ejerlavkode" in feature.properties && "matrikelnr" in feature.properties && !("vejnavn" in feature.properties)) {      
+      layer.bindPopup("Jordstykke: " + feature.properties.ejerlavkode + " " + feature.properties.matrikelnr);
+    }
+    else if ("type" in feature.properties && "navn" in feature.properties) {  
+      layer.bindPopup(feature.properties.navn + " (" + feature.properties.type + ")");
+    }
+    else if ("kode" in feature.properties && "navn" in feature.properties) {  
+      layer.bindPopup(feature.properties.kode + " " + feature.properties.navn);
+    }
+     else if ("nr" in feature.properties && "navn" in feature.properties) {  
+      layer.bindPopup(feature.properties.nr + " " + feature.properties.navn);
+    }
+    else if ("vejnavn" in feature.properties && "husnr" in feature.properties) {  
+      layer.bindPopup(feature.properties.vejnavn + " " + feature.properties.husnr + ", " + (feature.properties.supplerendebynavn?feature.properties.supplerendebynavn+", ":"") + feature.properties.postnr + " " + feature.properties.postnrnavn);
+    }
+  }
+
+  function pointToLayer(style) {
+    return function(feature, latlng) {
+      if (style.husnr) {
+        return L.marker(latlng, {icon: L.divIcon({className: "labelClass", html: feature.properties.husnr})});
+      }
+      else {
+        return L.circleMarker(latlng, style);
+      }
+    }
+  }
+
+  function getDefaultStyle(featureData) {
+    var defaultstyle;
+    if (featureData.geometry && featureData.geometry.type==='Point') {
+      defaultstyle= defaultpointstyle;
+    }
+    else {
+      defaultstyle= defaultlinestyle;
+    }
+    return defaultstyle;
+  }
 
 
 function visKommune (e) {

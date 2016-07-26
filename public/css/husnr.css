@@ -1,0 +1,6 @@
+.labelClass{
+  white-space:nowrap;
+  text-shadow: 0 0 0.1em black, 0 0 0.1em black,
+        0 0 0.1em black,0 0 0.1em black,0 0 0.1em;
+  color: yellow
+}
