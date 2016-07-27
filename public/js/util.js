@@ -68,6 +68,7 @@ var eachFeature= function (feature, layer) {
     else if ("vejnavn" in feature.properties && "husnr" in feature.properties) {  
       layer.bindPopup(feature.properties.vejnavn + " " + feature.properties.husnr + ", " + (feature.properties.supplerendebynavn?feature.properties.supplerendebynavn+", ":"") + feature.properties.postnr + " " + feature.properties.postnrnavn);
     }
+    layer.on('contextmenu', function(e) {map.contextmenu.showAt(e.latlng)});
   }
 
   function pointToLayer(style) {
