@@ -117,20 +117,8 @@ function visKommune (e) {
   }); 
 }
 
-function showCoordinates (e) {
-  alert(e.latlng);
-}
-
 function centerMap (e) {
   map.panTo(e.latlng);
-}
-
-function zoomIn (e) {
-  map.zoomIn();
-}
-
-function zoomOut (e) {
-  map.zoomOut();
 }
   
 var visKort= function (ticket) {
@@ -145,15 +133,9 @@ var visKort= function (ticket) {
         contextmenuItems: [{
           text: 'Kommune?',
           callback: visKommune
-        }, {
-          text: 'Center map here',
+        }, '-',{
+          text: 'Centrer kort her',
           callback: centerMap
-        }, '-', {
-          text: 'Zoom in',
-          callback: zoomIn
-        }, {
-          text: 'Zoom out',
-          callback: zoomOut
         }]     
   });
 

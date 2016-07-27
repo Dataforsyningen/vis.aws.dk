@@ -13,10 +13,22 @@ $(function() {
       [57.751949, 15.193240],
       [54.559132, 8.074720]
     ]);
+    var options= {text: 'Zoom til data', callback: zoomtildata};
+    map.contextmenu.addItem(options);
   })
   .fail(function( jqXHR, textStatus, errorThrown ) {
     alert('Ingen ticket: ' + jqXHR.statusCode() + ", " + textStatus + ", " + jqXHR.responseText);
   });
+
+  function zoomtildata (e) {
+    var ls= [];
+    var keys= Object.keys(layers);
+    for (var i= 0; i<keys.length; i++) {
+      ls.push(layers[keys[i]].layer);
+    }
+    var layergroup= L.featureGroup(ls);     
+    map.fitBounds(layergroup.getBounds());
+  }
 
   $('#layers').dropdown();
   $("#urls").on("click", "li", function(event){
