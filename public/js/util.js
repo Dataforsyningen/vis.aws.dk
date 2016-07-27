@@ -28,12 +28,24 @@ var defaultpointstyle = {
   "radius": 5
 };
 
-var defaultlinestyle = {
+var defaultpolygonstyle = {
   "stroke": true,
   "color": "blue",
   "opacity": 1.0,
   "weight": 2, 
   "fill": true,
+  "fillColor": 'blue',
+  "fillOpacity": 0.2,
+  "husnr": false, 
+  "radius": 5
+};
+
+var defaultlinestyle = {
+  "stroke": true,
+  "color": "blue",
+  "opacity": 1.0,
+  "weight": 2, 
+  "fill": false,
   "fillColor": 'blue',
   "fillOpacity": 0.2,
   "husnr": false, 
@@ -73,6 +85,10 @@ var eachFeature= function (feature, layer) {
     var defaultstyle;
     if (featureData.geometry && featureData.geometry.type==='Point') {
       defaultstyle= defaultpointstyle;
+    }
+    else if (featureData.geometry && featureData.geometry.type==='MultiPolygon') {
+
+      defaultstyle= defaultpolygonstyle; 
     }
     else {
       defaultstyle= defaultlinestyle;
