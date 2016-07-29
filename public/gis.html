@@ -19,6 +19,7 @@
 
     <!-- Custom styles for this template -->
     <link href="./css/gis.css" rel="stylesheet">
+    <link href="./css/husnr.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -55,7 +56,7 @@
               <div class="input-group-addon">http://dawa.aws.dk/</div>
               <input id="url" type="text" class="form-control" placeholder="DAWA URL">
             </div>
-            <button type="submit" id="vis" class="form-control">Vis</button>         
+            <button type="submit" id="tilføj" class="form-control">Tilføj</button>         
             <button type="submit" id="fjern" class="form-control">Fjern</button>             
           </form>
         </div>
@@ -65,17 +66,23 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-            <div class="dropdown">
-              <button id="layers" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Lag
-                <span class="caret"></span>
-              </button>
-              <ul id="urls" class="dropdown-menu" aria-labelledby="dropdownMenu1">
-              </ul>
-            </div>
+          <div class="dropdown">
+            <button id="layers" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              Lag
+              <span class="caret"></span>
+            </button>
+            <ul id="urls" class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            </ul>
+          </div>
+          <form id='form'> 
             <h3>Linje</h3>
-            <form id='form'> 
-              <div class="form-group"> <div class="form-group">
+            <div class="form-group"> 
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input id="linjevises" type="checkbox"> Vises
+                  </label>
+                </div>
                 <label for="linjefarve">Farve</label><br/>
                 <select id="linjefarve" class="form-control">
                   <option value='blue' selected='selected'>Blue</option>
@@ -83,106 +90,91 @@
                   <option value='yellow'>Yellow</option>
                   <option value='red'>Red</option>
                 </select>
+                <label for="linjetykkelse">Tykkelse</label><br/>
+                <select id="linjetykkelse" class="form-control">
+                  <option value='1'>1</option>
+                  <option value='2'>2</option>
+                  <option value='3'>3</option>
+                  <option value='4'>4</option>
+                  <option value='5'>5</option>
+                  <option value='6'>6</option>
+                  <option value='7'>7</option>
+                  <option value='8'>8</option>
+                  <option value='9'>9</option>
+                  <option value='10'>10</option>
+                </select>
+                <label for="linjeopacitet">Opacitet</label><br/>
+                <select id="linjeopacitet" class="form-control">
+                  <option value='0.1'>0.1</option>
+                  <option value='0.2'>0.2</option>
+                  <option value='0.3'>0.3</option>
+                  <option value='0.4'>0.4</option>
+                  <option value='0.5'>0.5</option>
+                  <option value='0.6'>0.6</option>
+                  <option value='0.7'>0.7</option>
+                  <option value='0.8'>0.8</option>
+                  <option value='0.9'>0.9</option>
+                  <option value='1'>1.0</option>
+                </select>
               </div>
-            </form>
-          </div>
-           <!--      <button id='punkttransparentbtn' class="btn">Farve</button>
-                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                  <span class="caret"></span>
-                </button>
-                <ul id='punkttransparent' class="dropdown-menu">
-                    <li>0.1</li>
-                    <li>0.2</li>
-                    <li>0.3</li>
-                    <li>0.4</li>
-                    <li>0.5</li>
-                    <li>0.6</li>
-                    <li>0.7</li>
-                    <li>0.8</li>
-                    <li>0.9</li>
-                    <li>1.0</li>
-                </ul>
-              </div>
+            </div>
+            <h3>Fyld</h3>
+            <div class="form-group"> 
               <div class="form-group">
-                <button id='punktradiusbtn' class="btn">Farve</button>
-                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                  <span class="caret"></span>
-                </button>
-                <ul id='punktradius' class="dropdown-menu">
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
-                    <li>5</li>
-                    <li>6</li>
-                    <li>7</li>
-                    <li>8</li>
-                    <li>9</li>
-                    <li>10</li>
-                </ul>
+                <div class="checkbox">
+                  <label>
+                    <input id="fyldvises" type="checkbox"> Vises
+                  </label>
+                </div>
+                <label for="fyldfarve">Farve</label><br/>
+                <select id="fyldfarve" class="form-control">
+                  <option value='blue' selected='selected'>Blue</option>
+                  <option value='green'>Green</option>
+                  <option value='yellow'>Yellow</option>
+                  <option value='red'>Red</option>
+                </select>
+                <label for="fyldopacitet">Opacitet</label><br/>
+                <select id="fyldopacitet" class="form-control">
+                  <option value='0.1'>0.1</option>
+                  <option value='0.2'>0.2</option>
+                  <option value='0.3'>0.3</option>
+                  <option value='0.4'>0.4</option>
+                  <option value='0.5'>0.5</option>
+                  <option value='0.6'>0.6</option>
+                  <option value='0.7'>0.7</option>
+                  <option value='0.8'>0.8</option>
+                  <option value='0.9'>0.9</option>
+                  <option value='1'>1.0</option>
+                </select>
               </div>
+            </div> 
+            <h3>Punkt</h3>
+            <div class="form-group"> 
               <div class="form-group">
-                <button id='punktfarvebtn' class="btn">Farve</button>
-                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                  <span class="caret"></span>
-                </button>
-                <ul id='punktfarve' class="dropdown-menu">
-                    <li>Blue</li>
-                    <li>Green</li>
-                    <li>Yellow</li>
-                    <li>Red</li>
-                </ul>
+                <label for="radius">Tykkelse</label><br/>
+                <select id="radius" class="form-control">
+                  <option value='1'>1</option>
+                  <option value='2'>2</option>
+                  <option value='3'>3</option>
+                  <option value='4'>4</option>
+                  <option value='5'>5</option>
+                  <option value='6'>6</option>
+                  <option value='7'>7</option>
+                  <option value='8'>8</option>
+                  <option value='9'>9</option>
+                  <option value='10'>10</option>
+                </select>
+                <div class="checkbox">
+                  <label>
+                    <input id="husnr" type="checkbox">Husnr
+                  </label>
+                </div>
               </div>
-              <label class="control-label navbarlabel">Linje:</label>
-              <div class="form-group">
-                <button id='transparentbtn' class="btn">Farve</button>
-                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                  <span class="caret"></span>
-                </button>
-                <ul id='transparent' class="dropdown-menu">
-                    <li>0.1</li>
-                    <li>0.2</li>
-                    <li>0.3</li>
-                    <li>0.4</li>
-                    <li>0.5</li>
-                    <li>0.6</li>
-                    <li>0.7</li>
-                    <li>0.8</li>
-                    <li>0.9</li>
-                    <li>1.0</li>
-                </ul>
-              </div>
-              <div class="form-group">
-                <button id='tykkelsebtn' class="btn">Farve</button>
-                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                  <span class="caret"></span>
-                </button>
-                <ul id='tykkelse' class="dropdown-menu">
-                    <li>1</li>
-                    <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
-                    <li>5</li>
-                </ul>
-              </div>
-              <div class="form-group">
-                <button id='farvebtn' class="btn">Farve</button>
-                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                  <span class="caret"></span>
-                </button>
-                <ul id='farve' class="dropdown-menu">
-                    <li>Blue</li>
-                    <li>Green</li>
-                    <li>Yellow</li>
-                    <li>Red</li>
-                </ul>
-              </div>
-              <input id='url' type="text" class="form-control" placeholder="Tast Dawa url">
-              <button type="submit" id="vis" class="form-control">Vis</button>
-              <button id="fjern" class="form-control">Fjern</button>
-              <input id='file' type="file" class="form-control">
-            </form>-->
-        </div> 
+            </div>
+            <button id="danwebside" type="button" class="btn btn-primary">Dan webside</button>
+          </form>
+        </div>
+          
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main ui-map">
           <div id="map"></div>
         </div>
