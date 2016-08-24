@@ -98,7 +98,7 @@ $(function() {
   $('#fyldvises').on('change', function() {
     style.fill= $('#fyldvises').is(':checked');   
     var url= $('#url').val();
-    layers[url].style.fil= style.fill;
+    layers[url].style.fill= style.fill;
     layers[url].layer.setStyle(layers[url].style);
   });
   $('#fyldfarve').on('change', function() {
