@@ -38,7 +38,9 @@ $(function() {
   })
 
   $("#danwebside").on("click", function(event){
-    var url= "http://localhost:3000/advvis?lag=";
+    var parser = document.createElement('a');
+    parser.href = window.location.href;
+    var url= "http://"+parser.host+"/advvis?lag=";
     var keys= Object.keys(layers);
     var value= "";
     for (var i= 0; i<keys.length; i++) {
