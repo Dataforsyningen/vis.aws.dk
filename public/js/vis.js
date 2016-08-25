@@ -17,8 +17,8 @@ $(function() {
         data: parametre
     })
     .then( function ( data ) {
-      var style=  getDefaultStyle(data.features[0]);
-      var geojsonlayer= L.geoJson(data, {style: getDefaultStyle, onEachFeature: eachFeature, pointToLayer: pointToLayer(style)});
+      var style=  getDefaultStyle(data);
+      var geojsonlayer= L.geoJson(data, {style: style, onEachFeature: eachFeature, pointToLayer: pointToLayer(style)});
       lag[dataurl]= geojsonlayer;
       geojsonlayer.addTo(map);
       map.fitBounds(geojsonlayer.getBounds());

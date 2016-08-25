@@ -82,7 +82,11 @@ var eachFeature= function (feature, layer) {
     }
   }
 
-  function getDefaultStyle(featureData) {
+  function getDefaultStyle(data) {
+    var featureData= data;
+    if (data.type !== 'Feature') {
+      featureData= data.features[0];
+    }
     var defaultstyle;
     if (featureData.geometry && featureData.geometry.type==='Point') {
       defaultstyle= defaultpointstyle;
