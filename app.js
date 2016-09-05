@@ -75,6 +75,18 @@ app.get('/gis', function (req, res) {
   });
 }); 
 
+app.get('/adr', function (req, res) {
+  //console.log(req);
+  res.sendFile(__dirname + "/public/adr.html", function (err) {
+    if (err) {
+      console.log('fejl: ' + err);
+    }
+    else {
+      console.log('Sent: gis.html');
+    }
+  });
+}); 
+
 app.get(/.+/, function (req, res) {
   //console.log(req);
   res.sendFile(__dirname + "/public/vis.html", function (err) {

@@ -66,7 +66,7 @@ var eachFeature= function (feature, layer) {
       layer.bindPopup(feature.properties.nr + " " + feature.properties.navn);
     }
     else if ("vejnavn" in feature.properties && "husnr" in feature.properties) {  
-      layer.bindPopup(feature.properties.vejnavn + " " + feature.properties.husnr + ", " + (feature.properties.supplerendebynavn?feature.properties.supplerendebynavn+", ":"") + feature.properties.postnr + " " + feature.properties.postnrnavn);
+      layer.bindPopup("<a target='_blank' href='http://dawa.aws.dk/adgangsadresser/"+feature.properties.id+"'>"+feature.properties.vejnavn + " " + feature.properties.husnr + ", " + (feature.properties.supplerendebynavn?feature.properties.supplerendebynavn+", ":"") + feature.properties.postnr + " " + feature.properties.postnrnavn + "</a>");
     }
     layer.on('contextmenu', function(e) {map.contextmenu.showAt(e.latlng)});
   }
@@ -142,6 +142,27 @@ var visKort= function (ticket) {
           text: 'Centrer kort her',
           callback: centerMap
         }]     
+  });
+
+  map.on('click', function(e) { 
+    var parametre= {};
+    parametre.x= e.latlng.lng; 
+    parametre.y= e.latlng.lat;    
+    parametre.format= 'geojson';   
+    $.ajax({
+      url: "http://dawa.aws.dk/adgangsadresser/reverse",
+      data: parametre,
+      datatype:  corssupported()?"json":"jsonp"
+    })
+    .then( function ( adgangsadresse ) { 
+      var style=  getDefaultStyle(adgangsadresse);
+      var geojsonlayer= L.geoJson(adgangsadresse, {style: style, onEachFeature: eachFeature, pointToLayer: pointToLayer(style)});
+      geojsonlayer.addTo(map);
+    //  map.fitBounds(geojsonlayer.getBounds());
+    })
+    .fail(function( jqXHR, textStatus, errorThrown ) {
+      alert('Ingen kommune: ' + jqXHR.statusCode() + ", " + textStatus + ", " + jqXHR.responseText);
+    }); 
   });
 
   var matrikelkort = L.tileLayer.wms('http://{s}.services.kortforsyningen.dk/service', {
@@ -239,7 +260,8 @@ var visKort= function (ticket) {
 //    "Adressekort":adressekort
   };
 
-  L.control.layers(baselayers, overlays).addTo(map);
+  L.control.layers(baselayers, overlays, {position: 'bottomleft'}).addTo(map);
+  //L.control.search().addTo(map);
 
   map.on('baselayerchange', function (e) {
     if (e.name === 'Skærmkort') {

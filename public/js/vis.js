@@ -21,7 +21,8 @@ $(function() {
       var geojsonlayer= L.geoJson(data, {style: style, onEachFeature: eachFeature, pointToLayer: pointToLayer(style)});
       lag[dataurl]= geojsonlayer;
       geojsonlayer.addTo(map);
-      map.fitBounds(geojsonlayer.getBounds());
+      map.fitBounds(geojsonlayer.getBounds());      
+      L.control.search().addTo(map); 
     })
     .fail(function( jqXHR, textStatus, errorThrown ) {
       alert(jqXHR.responseText);
