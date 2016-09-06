@@ -65,6 +65,9 @@ var eachFeature= function (feature, layer) {
      else if ("nr" in feature.properties && "navn" in feature.properties) {  
       layer.bindPopup(feature.properties.nr + " " + feature.properties.navn);
     }
+    else if ("vejnavn" in feature.properties && "husnr" in feature.properties && "etage" in feature.properties) {  
+      layer.bindPopup("<a target='_blank' href='http://dawa.aws.dk/adresser/"+feature.properties.id+"'>"+feature.properties.vejnavn + " " + feature.properties.husnr + ", " + (feature.properties.supplerendebynavn?feature.properties.supplerendebynavn+", ":"") + feature.properties.postnr + " " + feature.properties.postnrnavn + "</a>");
+    }
     else if ("vejnavn" in feature.properties && "husnr" in feature.properties) {  
       layer.bindPopup("<a target='_blank' href='http://dawa.aws.dk/adgangsadresser/"+feature.properties.id+"'>"+feature.properties.vejnavn + " " + feature.properties.husnr + ", " + (feature.properties.supplerendebynavn?feature.properties.supplerendebynavn+", ":"") + feature.properties.postnr + " " + feature.properties.postnrnavn + "</a>");
     }
@@ -102,6 +105,16 @@ var eachFeature= function (feature, layer) {
   }
 
 
+function visKoordinater (e) {
+  var parametre= {};
+  parametre.x= e.latlng.lng; 
+  parametre.y= e.latlng.lat; 
+  var popup = L.popup()
+    .setLatLng(e.latlng)
+    .setContent('<p>Koordinater<br/>(' + parametre.x + ', ' + parametre.y + ')</p>')
+    .openOn(map);
+}
+
 function visKommune (e) {
   var parametre= {};
   parametre.x= e.latlng.lng; 
@@ -136,6 +149,10 @@ var visKort= function (ticket) {
         contextmenu: true,
         contextmenuWidth: 140,
         contextmenuItems: [{
+          text: 'Koordinater?',
+          callback: visKoordinater
+        },
+        {
           text: 'Kommune?',
           callback: visKommune
         }, '-',{

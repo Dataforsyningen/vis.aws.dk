@@ -44,7 +44,7 @@ $(function() {
     var keys= Object.keys(layers);
     var value= "";
     for (var i= 0; i<keys.length; i++) {
-      var element= "http://dawa.aws.dk/"+keys[i]+"$"+JSON.stringify(layers[keys[i]].style);
+      var element= absoluteURL(keys[i])+"$"+JSON.stringify(layers[keys[i]].style);
       if (i<keys.length-1) element= element+"@";
       value= value+element;
     }
@@ -131,14 +131,17 @@ $(function() {
   $('#tilføj').on("click", tilføj);
   $('#fjern').on("click", fjern);
 
+  function absoluteURL(url) {
+    return url.startsWith('http://')?url:"http://dawa.aws.dk/" + url;
+  }
+
   function tilføj(event) {
     event.preventDefault();
-    var url= $('#url').val().trim();
+    var url= $('#url').val().trim().toLowerCase();
     if (layers[url]) return;
     var parametre= {format: 'geojson'};
-    //var parametre= {};    
     $.ajax({
-        url: "http://dawa.aws.dk/" + url,
+        url: absoluteURL(url),
         dataType: "json",
         data: parametre
     })
