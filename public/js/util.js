@@ -135,6 +135,27 @@ function visKommune (e) {
   }); 
 }
 
+function nærmesteAdgangsadresse(e) { 
+  var parametre= {};
+  parametre.x= e.latlng.lng; 
+  parametre.y= e.latlng.lat;    
+  parametre.format= 'geojson';   
+  $.ajax({
+    url: "http://dawa.aws.dk/adgangsadresser/reverse",
+    data: parametre,
+    datatype:  corssupported()?"json":"jsonp"
+  })
+  .then( function ( adgangsadresse ) { 
+    var style=  getDefaultStyle(adgangsadresse);
+    var geojsonlayer= L.geoJson(adgangsadresse, {style: style, onEachFeature: eachFeature, pointToLayer: pointToLayer(style)});
+    geojsonlayer.addTo(map);
+  //  map.fitBounds(geojsonlayer.getBounds());
+  })
+  .fail(function( jqXHR, textStatus, errorThrown ) {
+    alert('Ingen kommune: ' + jqXHR.statusCode() + ", " + textStatus + ", " + jqXHR.responseText);
+  }); 
+};
+
 function centerMap (e) {
   map.panTo(e.latlng);
 }
@@ -153,33 +174,16 @@ var visKort= function (ticket) {
           callback: visKoordinater
         },
         {
+          text: 'Nærmeste adgangsadrese?',
+          callback: nærmesteAdgangsadresse
+        },
+        {
           text: 'Kommune?',
           callback: visKommune
         }, '-',{
           text: 'Centrer kort her',
           callback: centerMap
         }]     
-  });
-
-  map.on('click', function(e) { 
-    var parametre= {};
-    parametre.x= e.latlng.lng; 
-    parametre.y= e.latlng.lat;    
-    parametre.format= 'geojson';   
-    $.ajax({
-      url: "http://dawa.aws.dk/adgangsadresser/reverse",
-      data: parametre,
-      datatype:  corssupported()?"json":"jsonp"
-    })
-    .then( function ( adgangsadresse ) { 
-      var style=  getDefaultStyle(adgangsadresse);
-      var geojsonlayer= L.geoJson(adgangsadresse, {style: style, onEachFeature: eachFeature, pointToLayer: pointToLayer(style)});
-      geojsonlayer.addTo(map);
-    //  map.fitBounds(geojsonlayer.getBounds());
-    })
-    .fail(function( jqXHR, textStatus, errorThrown ) {
-      alert('Ingen kommune: ' + jqXHR.statusCode() + ", " + textStatus + ", " + jqXHR.responseText);
-    }); 
   });
 
   var matrikelkort = L.tileLayer.wms('http://{s}.services.kortforsyningen.dk/service', {
