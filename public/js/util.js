@@ -200,6 +200,34 @@ var visKort= function (ticket) {
     minZoom: 9
   });
 
+  var postnrkort = L.tileLayer.wms('http://{s}.services.kortforsyningen.dk/service', {
+    service: 'WMS',
+    transparent: true,
+    servicename: 'dagi',
+    layers: 'postdistrikt',
+    version: '1.1.0',
+    ticket: ticket,
+    styles: 'default',
+    format: 'image/png',
+    attribution: 'SDFE',
+    continuousWorld: true,
+    minZoom: 2
+  });
+
+  var kommunekort = L.tileLayer.wms('http://{s}.services.kortforsyningen.dk/service', {
+    service: 'WMS',
+    transparent: true,
+    servicename: 'dagi',
+    layers: 'kommune',
+    version: '1.1.0',
+    ticket: ticket,
+    styles: 'default',
+    format: 'image/png',
+    attribution: 'SDFE',
+    continuousWorld: true,
+    minZoom: 2
+  });
+
   // var adressekort = L.tileLayer.wms('http://kort.aws.dk/geoserver/aws4/wms', {
   //   service: 'WMS',
   //   transparent: true,
@@ -278,6 +306,8 @@ var visKort= function (ticket) {
 
   var overlays = {
     "Matrikelkort": matrikelkort,
+    "Kommunekort": kommunekort,
+    "Postnummerkort": postnrkort
 //    "Adressekort":adressekort
   };
 
@@ -289,9 +319,21 @@ var visKort= function (ticket) {
         matrikelkort.setParams({
             styles: 'sorte_centroider,sorte_skel,default'
         });
+        postnrkort.setParams({
+            styles: 'default'
+        });
+        kommunekort.setParams({
+            styles: 'default'
+        });
     } else if (e.name === 'Flyfoto') {
         matrikelkort.setParams({
             styles: 'gule_centroider,gule_skel,Gul_OptagetVej,default'
+        });
+        postnrkort.setParams({
+            styles: 'yellow'
+        });
+        kommunekort.setParams({
+            styles: 'yellow'
         });
     }
   });
