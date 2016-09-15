@@ -22,7 +22,7 @@ $(function() {
       lag[dataurl]= geojsonlayer;
       geojsonlayer.addTo(map);
       map.fitBounds(geojsonlayer.getBounds());      
-      L.control.search().addTo(map); 
+      // L.control.search().addTo(map); 
     })
     .fail(function( jqXHR, textStatus, errorThrown ) {
       alert(jqXHR.responseText);
