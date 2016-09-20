@@ -132,19 +132,24 @@ $(function() {
   $('#fjern').on("click", fjern);
 
   function absoluteURL(url) {
-    return url.substr(0,7).toLowerCase().startsWith('http://')?url:"http://dawa.aws.dk/" + url;
+    return url.substr(0,7).toLowerCase().indexOf('http://',0)===0?url:"http://dawa.aws.dk/" + url;
   }
 
   function tilføj(event) {
     event.preventDefault();
     var url= $('#url').val().trim();
     if (layers[url]) return;
-    var parametre= {format: 'geojson'};
-    $.ajax({
-        url: absoluteURL(url),
-        dataType: "json",
-        data: parametre
-    })
+    var options= {};
+    options.data= {format: 'geojson'};
+    options.url= encodeURI(absoluteURL(url));
+    if (corssupported()) {
+      options.dataType= "json";
+      options.jsonp= false;
+    }
+    else {        
+      options.dataType= "jsonp";
+    }
+    $.ajax(options)
     .then( function ( data ) {
       if (data.geometri || data.features && data.features.length === 0) {
         alert('Søgning gav intet resultat');

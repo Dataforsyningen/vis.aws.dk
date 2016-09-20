@@ -9,13 +9,17 @@ $(function() {
   var dataurl= parser.href; 
 
   var visData= function() {
-    var parametre= {format: 'geojson'};    
-    //var parametre= {};    
-    $.ajax({
-        url: dataurl,
-        dataType: corssupported()?"json":"jsonp",
-        data: parametre
-    })
+    var options= {};
+    options.data= {format: 'geojson'};
+    options.url= encodeURI(dataurl);
+    if (corssupported()) {
+      options.dataType= "json";
+      options.jsonp= false;
+    }
+    else {        
+      options.dataType= "jsonp";
+    }
+    $.ajax(options)
     .then( function ( data ) {
       var style=  getDefaultStyle(data);
       var geojsonlayer= L.geoJson(data, {style: style, onEachFeature: eachFeature, pointToLayer: pointToLayer(style)});

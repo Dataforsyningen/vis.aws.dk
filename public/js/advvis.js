@@ -30,7 +30,7 @@ $(function() {
       styles[i]= laget.length>1?laget[1]:"{}";
       var options= {};
       options.data= {format: 'geojson'};
-      options.url= urls[i];
+      options.url= encodeURI(urls[i]);
       if (corssupported()) {
         options.dataType= "json";
         options.jsonp= false;
