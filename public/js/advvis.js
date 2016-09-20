@@ -28,9 +28,19 @@ $(function() {
       var laget= lag[i].split('$');
       urls[i]= laget[0];
       styles[i]= laget.length>1?laget[1]:"{}";
-      var parametre= {format: 'geojson'};
-      var datatype=  corssupported()?"json":"jsonp";
-      promises.push($.ajax({url: urls[i], dataType: datatype, data: parametre}));
+      var options= {};
+      options.data= {format: 'geojson'};
+      options.url= urls[i];
+      if (corssupported()) {
+        options.dataType= "json";
+        options.jsonp= false;
+      }
+      else {        
+        options.dataType= "jsonp";
+      }
+      //var datatype=  corssupported()?"json":"jsonp";
+      //promises.push($.ajax({url: urls[i], dataType: datatype, data: parametre}));
+      promises.push($.ajax(options));
     };
     $.when.apply($, promises).then(function() {
       var layers = [];
