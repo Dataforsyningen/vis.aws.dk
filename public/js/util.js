@@ -116,14 +116,16 @@ function visKoordinater (e) {
 }
 
 function visKommune (e) {
-  var parametre= {};
-  parametre.x= e.latlng.lng; 
-  parametre.y= e.latlng.lat; 
-  $.ajax({
-    url: "http://dawa.aws.dk/kommuner/reverse",
-    data: parametre,
-    datatype:  corssupported()?"json":"jsonp"
-  })
+  var options= {};
+  options.url= "http://dawa.aws.dk/kommuner/reverse";
+  if (corssupported()) {
+    options.dataType= "json";
+    options.jsonp= false;
+  }
+  else {        
+    options.dataType= "jsonp";
+  }
+  $.ajax(options)
   .then( function ( kommune ) {
     var popup = L.popup()
     .setLatLng(e.latlng)
@@ -135,17 +137,18 @@ function visKommune (e) {
   }); 
 }
 
-function nærmesteAdgangsadresse(e) { 
-  var parametre= {};
-  parametre.x= e.latlng.lng; 
-  parametre.y= e.latlng.lat;    
-  parametre.format= 'geojson';
-  parametre.medtagugyldige= true;   
-  $.ajax({
-    url: "http://dawa.aws.dk/adgangsadresser/reverse",
-    data: parametre,
-    datatype:  corssupported()?"json":"jsonp"
-  })
+function nærmesteAdgangsadresse(e) {
+  var options= {};
+  options.data= {format: 'geojson', x: e.latlng.lng, y: e.latlng.lat, medtagugyldige: true};
+  options.url= "http://dawa.aws.dk/adgangsadresser/reverse";
+  if (corssupported()) {
+    options.dataType= "json";
+    options.jsonp= false;
+  }
+  else {        
+    options.dataType= "jsonp";
+  }  
+  $.ajax(options)
   .then( function ( adgangsadresse ) { 
     var style=  getDefaultStyle(adgangsadresse);
     var geojsonlayer= L.geoJson(adgangsadresse, {style: style, onEachFeature: eachFeature, pointToLayer: pointToLayer(style)});
