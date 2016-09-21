@@ -139,7 +139,8 @@ function nærmesteAdgangsadresse(e) {
   var parametre= {};
   parametre.x= e.latlng.lng; 
   parametre.y= e.latlng.lat;    
-  parametre.format= 'geojson';   
+  parametre.format= 'geojson';
+  parametre.medtagugyldige= true;   
   $.ajax({
     url: "http://dawa.aws.dk/adgangsadresser/reverse",
     data: parametre,
