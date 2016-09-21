@@ -117,6 +117,7 @@ function visKoordinater (e) {
 
 function visKommune (e) {
   var options= {};
+  options.data= {x: e.latlng.lng, y: e.latlng.lat};
   options.url= "http://dawa.aws.dk/kommuner/reverse";
   if (corssupported()) {
     options.dataType= "json";
