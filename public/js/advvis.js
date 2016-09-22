@@ -23,7 +23,7 @@ $(function() {
     var promises = []
       , urls= []
       , styles= [];
-    for (let i = 0; i < lag.length; i++) {
+    for (i = 0; i < lag.length; i++) {
       console.log(lag[i]);
       var laget= lag[i].split('$');
       urls[i]= laget[0];
@@ -44,7 +44,7 @@ $(function() {
     };
     $.when.apply($, promises).then(function() {
       var layers = [];
-      for (let i = 0; i < promises.length; i++) {
+      for (i = 0; i < promises.length; i++) {
         console.log(styles[i]);
         var style= JSON.parse(styles[i]);
         var geojsonlayer= L.geoJson(arguments[i], {style: style, onEachFeature: eachFeature, pointToLayer: pointToLayer(style)});

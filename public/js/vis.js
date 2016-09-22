@@ -11,7 +11,7 @@ $(function() {
   var visData= function() {
     var options= {};
     options.data= {format: 'geojson'};
-    options.url= encodeURI(dataurl);
+    options.url= encode(dataurl);
     if (corssupported()) {
       options.dataType= "json";
       options.jsonp= false;

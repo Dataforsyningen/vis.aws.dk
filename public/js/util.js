@@ -15,6 +15,10 @@ function getQueryVariable(variable) {
   }
 }
 
+function encode(url) {
+  return (url.indexOf('%') === -1)?encodeURI(url):url;
+}
+
 var defaultpointstyle = {
   "stroke": false,
   "husnr": false,
