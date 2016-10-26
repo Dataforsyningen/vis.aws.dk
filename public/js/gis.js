@@ -40,7 +40,7 @@ $(function() {
   $("#danwebside").on("click", function(event){
     var parser = document.createElement('a');
     parser.href = window.location.href;
-    var url= "http://"+parser.host+"/advvis?lag=";
+    var url= "https://"+parser.host+"/advvis?lag=";
     var keys= Object.keys(layers);
     var value= "";
     for (var i= 0; i<keys.length; i++) {
@@ -132,7 +132,7 @@ $(function() {
   $('#fjern').on("click", fjern);
 
   function absoluteURL(url) {
-    return url.substr(0,7).toLowerCase().indexOf('http://',0)===0?url:"http://dawa.aws.dk/" + url;
+    return url.substr(0,7).toLowerCase().indexOf('http',0)===0?url:"http://dawa.aws.dk/" + url;
   }
 
   function tilføj(event) {

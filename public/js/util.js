@@ -70,10 +70,10 @@ var eachFeature= function (feature, layer) {
       layer.bindPopup(feature.properties.nr + " " + feature.properties.navn);
     }
     else if ("vejnavn" in feature.properties && "husnr" in feature.properties && "etage" in feature.properties) {  
-      layer.bindPopup("<a target='_blank' href='http://dawa.aws.dk/adresser/"+feature.properties.id+"'>"+feature.properties.vejnavn + " " + feature.properties.husnr + ", " + (feature.properties.supplerendebynavn?feature.properties.supplerendebynavn+", ":"") + feature.properties.postnr + " " + feature.properties.postnrnavn + "</a>");
+      layer.bindPopup("<a target='_blank' href='https://dawa.aws.dk/adresser/"+feature.properties.id+"'>"+feature.properties.vejnavn + " " + feature.properties.husnr + ", " + (feature.properties.supplerendebynavn?feature.properties.supplerendebynavn+", ":"") + feature.properties.postnr + " " + feature.properties.postnrnavn + "</a>");
     }
     else if ("vejnavn" in feature.properties && "husnr" in feature.properties) {  
-      layer.bindPopup("<a target='_blank' href='http://dawa.aws.dk/adgangsadresser/"+feature.properties.id+"'>"+feature.properties.vejnavn + " " + feature.properties.husnr + ", " + (feature.properties.supplerendebynavn?feature.properties.supplerendebynavn+", ":"") + feature.properties.postnr + " " + feature.properties.postnrnavn + "</a>");
+      layer.bindPopup("<a target='_blank' href='https://dawa.aws.dk/adgangsadresser/"+feature.properties.id+"'>"+feature.properties.vejnavn + " " + feature.properties.husnr + ", " + (feature.properties.supplerendebynavn?feature.properties.supplerendebynavn+", ":"") + feature.properties.postnr + " " + feature.properties.postnrnavn + "</a>");
     }
     layer.on('contextmenu', function(e) {map.contextmenu.showAt(e.latlng)});
   }
@@ -122,7 +122,7 @@ function visKoordinater (e) {
 function visKommune (e) {
   var options= {};
   options.data= {x: e.latlng.lng, y: e.latlng.lat};
-  options.url= "http://dawa.aws.dk/kommuner/reverse";
+  options.url= "https://dawa.aws.dk/kommuner/reverse";
   if (corssupported()) {
     options.dataType= "json";
     options.jsonp= false;
@@ -145,7 +145,7 @@ function visKommune (e) {
 function nærmesteAdgangsadresse(e) {
   var options= {};
   options.data= {format: 'geojson', x: e.latlng.lng, y: e.latlng.lat, medtagugyldige: true};
-  options.url= "http://dawa.aws.dk/adgangsadresser/reverse";
+  options.url= "https://dawa.aws.dk/adgangsadresser/reverse";
   if (corssupported()) {
     options.dataType= "json";
     options.jsonp= false;
@@ -203,7 +203,7 @@ var visKort= function (ticket) {
     [54.559132, 8.074720]
   ]);
 
-  var matrikelkort = L.tileLayer.wms('http://{s}.services.kortforsyningen.dk/service', {
+  var matrikelkort = L.tileLayer.wms('https://{s}.services.kortforsyningen.dk/service', {
     service: 'WMS',
     transparent: true,
     servicename: 'mat',
@@ -217,7 +217,7 @@ var visKort= function (ticket) {
     minZoom: 9
   });
 
-  var postnrkort = L.tileLayer.wms('http://{s}.services.kortforsyningen.dk/service', {
+  var postnrkort = L.tileLayer.wms('https://{s}.services.kortforsyningen.dk/service', {
     service: 'WMS',
     transparent: true,
     servicename: 'dagi',
@@ -231,7 +231,7 @@ var visKort= function (ticket) {
     minZoom: map.options.minZoo
   });
 
-  var kommunekort = L.tileLayer.wms('http://{s}.services.kortforsyningen.dk/service', {
+  var kommunekort = L.tileLayer.wms('https://{s}.services.kortforsyningen.dk/service', {
     service: 'WMS',
     transparent: true,
     servicename: 'dagi',
@@ -245,14 +245,14 @@ var visKort= function (ticket) {
     minZoom: map.options.minZoom
   });
 
-  var adressekort = L.tileLayer.wms('http://kort.aws.dk/geoserver/aws4/wms', {
+  var adressekort = L.tileLayer.wms('https://kort.aws.dk/geoserver/aws4/wms', {
     transparent: true,
     layers: 'adgangsadresser',
     //ticket: ticket,
-    styles: 'Standard',
+    //styles: '',
     format: 'image/png',
     //attribution: "Geodatastyrelsen",
-    //continuousWorld: true,
+    continuousWorld: true
     //minZoom: 9
     // SLD: 'http://www.jo-informatik.dk/sld/Standard_kk.xml'
   });
@@ -270,7 +270,7 @@ var visKort= function (ticket) {
   //   }
   // });
 
-  var ortofoto = L.tileLayer('http://{s}.services.kortforsyningen.dk/orto_foraar?ticket=' + ticket + '&request=GetTile&version=1.0.0&service=WMTS&Layer=orto_foraar&style=default&format=image/jpeg&TileMatrixSet=View1&TileMatrix={zoom}&TileRow={y}&TileCol={x}', {
+  var ortofoto = L.tileLayer('https://{s}.services.kortforsyningen.dk/orto_foraar?ticket=' + ticket + '&request=GetTile&version=1.0.0&service=WMTS&Layer=orto_foraar&style=default&format=image/jpeg&TileMatrixSet=View1&TileMatrix={zoom}&TileRow={y}&TileCol={x}', {
     attribution: 'Data</a> fra <a href="http://dawa.aws.dk">DAWA</a> | Map data &copy;  <a href="http://sdfe.dk">SDFE</a>',
     continuousWorld: true,
     maxZoom: map.options.maxZoom,
@@ -283,7 +283,7 @@ var visKort= function (ticket) {
     }
   });
 
-  var dhmTerræn = L.tileLayer.wms('http://kortforsyningen.kms.dk/dhm?ticket='+ticket, {
+  var dhmTerræn = L.tileLayer.wms('https://kortforsyningen.kms.dk/dhm?ticket='+ticket, {
     attribution: 'Geodatastyrelsen',
     layers: 'dhm_terraen_skyggekort',
     continuousWorld: true,
@@ -297,7 +297,7 @@ var visKort= function (ticket) {
     }
   });
 
-  var dhmOverflade = L.tileLayer.wms('http://kortforsyningen.kms.dk/dhm?ticket='+ticket, {
+  var dhmOverflade = L.tileLayer.wms('https://kortforsyningen.kms.dk/dhm?ticket='+ticket, {
     attribution: 'Geodatastyrelsen',
     layers: 'dhm_overflade_skyggekort',
     continuousWorld: true,
@@ -311,8 +311,8 @@ var visKort= function (ticket) {
     }
   });
 
-  var skaermkort = L.tileLayer('http://{s}.services.kortforsyningen.dk/topo_skaermkort?ticket=' + ticket + '&request=GetTile&version=1.0.0&service=WMTS&Layer=dtk_skaermkort&style=default&format=image/jpeg&TileMatrixSet=View1&TileMatrix={zoom}&TileRow={y}&TileCol={x}', {
-    attribution: 'Data</a> fra <a href="http://dawa.aws.dk">DAWA</a> | Map data &copy;  <a href="http://sdfe.dk">SDFE</a>',
+  var skaermkort = L.tileLayer('https://{s}.services.kortforsyningen.dk/topo_skaermkort?ticket=' + ticket + '&request=GetTile&version=1.0.0&service=WMTS&Layer=dtk_skaermkort&style=default&format=image/jpeg&TileMatrixSet=View1&TileMatrix={zoom}&TileRow={y}&TileCol={x}', {
+    attribution: 'Data</a> fra <a href="https://dawa.aws.dk">DAWA</a> | Map data &copy;  <a href="http://sdfe.dk">SDFE</a>',
     continuousWorld: true,
     maxZoom: map.options.maxZoom,
     zoom: function () {

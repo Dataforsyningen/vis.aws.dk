@@ -16,5 +16,11 @@ $(function() {
   .fail(function( jqXHR, textStatus, errorThrown ) {
     alert('Ingen ticket: ' + jqXHR.statusCode() + ", " + textStatus + ", " + jqXHR.responseText);
   }); 
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+             .register('./service-worker.js')
+             .then(function() { console.log('Service Worker Registered'); });
+  }
  
 });
