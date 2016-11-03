@@ -132,7 +132,7 @@ $(function() {
   $('#fjern').on("click", fjern);
 
   function absoluteURL(url) {
-    return url.substr(0,7).toLowerCase().indexOf('http',0)===0?url:"http://dawa.aws.dk/" + url;
+    return url.substr(0,7).toLowerCase().indexOf('http',0)===0?url:"https://dawa.aws.dk/" + url;
   }
 
   function tilføj(event) {

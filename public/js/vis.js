@@ -5,7 +5,12 @@ $(function() {
 
  var parser = document.createElement('a');
   parser.href = window.location.href;
-  parser.host= 'dawa.aws.dk:80'; 
+  if (parser.host.indexOf('localhost') === -1) {
+    parser.host= parser.host.replace('vis','dawa'); // 'dawa.aws.dk:80'; 
+  }
+  else {    
+    parser.host= 'dawa.aws.dk:80'; 
+  }
   var dataurl= parser.href; 
 
   var visData= function() {
