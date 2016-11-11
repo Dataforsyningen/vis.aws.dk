@@ -42,18 +42,19 @@ $(function() {
     $.ajax(options)
     .then( function ( data ) {
       for (var i= 0; i<data.length; i++) {
+        if (data[i].operation === 'update') continue;
         var wgs84= proj4('EPSG:25832','EPSG:4326', {x:data[i].data.etrs89koordinat_øst, y:data[i].data.etrs89koordinat_nord});
         //var marker= L.marker(L.latLng(wgs84.x, wgs84.y)).addTo(map); // {color: 'red', fillColor: 'red', stroke: false, fillOpacity: 1.0, radius: 5});//defaultpointstyle);
         //var marker= L.marker(L.latLng(wgs84.y, wgs84.x)).addTo(map); // {color: 'red', fillColor: 'red', stroke: false, fillOpacity: 1.0, radius: 5});//defaultpointstyle);
         var color= 'blue';
         switch (data[i].operation) {
-        case 'indsættelse':
-          color= 'green';
+        case 'insert':
+          color= 'red';
           break;
-        case 'opdatering':
+        case 'update':
           color= 'yellow';
           break;
-        case 'sletning':
+        case 'delete':
           color= 'black';
           break;
         }
