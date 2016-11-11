@@ -63,6 +63,18 @@ app.get('/advvis', function (req, res) {
   });
 }); 
 
+app.get('/stat', function (req, res) {
+  //console.log(req);
+  res.sendFile(__dirname + "/public/stat.html", function (err) {
+    if (err) {
+      console.log('fejl: ' + err);
+    }
+    else {
+      console.log('Sent: stat.html');
+    }
+  });
+}); 
+
 app.get('/gis', function (req, res) {
   //console.log(req);
   res.sendFile(__dirname + "/public/gis.html", function (err) {
