@@ -58,7 +58,7 @@ $(function() {
           color= 'black';
           break;
         }
-        var marker= L.circleMarker(L.latLng(wgs84.y, wgs84.x), {color: color, fillColor: color, stroke: false, fillOpacity: 1.0, radius: 5}).addTo(map);//defaultpointstyle);
+        var marker= L.circleMarker(L.latLng(wgs84.y, wgs84.x), {color: color, fillColor: color, stroke: false, fillOpacity: 1.0, radius: 3}).addTo(map);//defaultpointstyle);
         //map.addLayer(marker);
         //map._onResize();   
       }  
