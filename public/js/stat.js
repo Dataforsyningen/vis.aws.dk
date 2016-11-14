@@ -1,5 +1,15 @@
 $(function() {
 
+  var info = L.control();
+
+  info.onAdd = function (map) {
+      this._div = L.DomUtil.create('div', 'info'); 
+      this._div.innerHTML = '<h3>Adgangsadresser oprettet/nedlagt</h3>'+'<p>' + fra.format('DD.MM.YYYY')  + ' - ' + til.format('DD.MM.YYYY') + '</p>' +
+        "<p>Et eksempel på brug af <a href='http://dawa.aws.dk/replikeringdok'>DAWA's replikerings API</a></p>";
+      //this.update();
+      return this._div;
+  };
+
   var fra= moment(getQueryVariable('fra'),'YYYYMMDD');
   if (!fra.isValid()) {
     alert('fra=' + getQueryVariable('fra') + ' er ikke en gyldig dato');
@@ -11,9 +21,10 @@ $(function() {
     alert('til=' + getQueryVariable('til') + ' er ikke en gyldig dato');
     return;
   }
-  til= til.add({days: 1});
+  var tilplus= til.clone()
+  tilplus.add({days: 1});
 
-  if (!fra.isBefore(til)) {
+  if (!fra.isBefore(tilplus)) {
     alert('fra dato er senere end til dato');
     return;
   }
@@ -30,7 +41,7 @@ $(function() {
 
   var visData= function() {
     var options= {};
-    options.data= {tidspunktfra: fra.utc().toISOString(), tidspunkttil: til.utc().toISOString()};
+    options.data= {tidspunktfra: fra.utc().toISOString(), tidspunkttil: tilplus.utc().toISOString()};
     options.url= encode('https://dawa.aws.dk/replikering/adgangsadresser/haendelser');
     if (corssupported()) {
       options.dataType= "json";
@@ -44,8 +55,6 @@ $(function() {
       for (var i= 0; i<data.length; i++) {
         if (data[i].operation === 'update') continue;
         var wgs84= proj4('EPSG:25832','EPSG:4326', {x:data[i].data.etrs89koordinat_øst, y:data[i].data.etrs89koordinat_nord});
-        //var marker= L.marker(L.latLng(wgs84.x, wgs84.y)).addTo(map); // {color: 'red', fillColor: 'red', stroke: false, fillOpacity: 1.0, radius: 5});//defaultpointstyle);
-        //var marker= L.marker(L.latLng(wgs84.y, wgs84.x)).addTo(map); // {color: 'red', fillColor: 'red', stroke: false, fillOpacity: 1.0, radius: 5});//defaultpointstyle);
         var color= 'blue';
         switch (data[i].operation) {
         case 'insert':
@@ -59,8 +68,7 @@ $(function() {
           break;
         }
         var marker= L.circleMarker(L.latLng(wgs84.y, wgs84.x), {color: color, fillColor: color, stroke: false, fillOpacity: 1.0, radius: 3}).addTo(map);//defaultpointstyle);
-        //map.addLayer(marker);
-        //map._onResize();   
+        marker.bindPopup("<a target='_blank' href='https://dawa.aws.dk/replikering/adgangsadresser/haendelser?id="+data[i].data.id+"'>" + data[i].data.id + "'s hændelser </a>");
       }  
     })
     .fail(function( jqXHR, textStatus, errorThrown ) {
@@ -76,6 +84,7 @@ $(function() {
   .then( function ( ticket ) {
     //visOSMKort(ticket);
     visKort(ticket);
+    info.addTo(map);
     visData();
   })
   .fail(function( jqXHR, textStatus, errorThrown ) {
