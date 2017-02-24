@@ -165,6 +165,29 @@ function nærmesteAdgangsadresse(e) {
   }); 
 };
 
+function hvor(e) {
+  var options= {};
+  options.data= {format: 'geojson', x: e.latlng.lng, y: e.latlng.lat, medtagugyldige: true};
+  options.url= "https://dawa.aws.dk/adgangsadresser/reverse";
+  if (corssupported()) {
+    options.dataType= "json";
+    options.jsonp= false;
+  }
+  else {        
+    options.dataType= "jsonp";
+  }  
+  $.ajax(options)
+  .then( function ( adgangsadresse ) { 
+    var style=  getDefaultStyle(adgangsadresse);
+    var geojsonlayer= L.geoJson(adgangsadresse, {style: style, onEachFeature: eachFeature, pointToLayer: pointToLayer(style)});
+    geojsonlayer.addTo(map);
+  //  map.fitBounds(geojsonlayer.getBounds());
+  })
+  .fail(function( jqXHR, textStatus, errorThrown ) {
+    alert('Ingen kommune: ' + jqXHR.statusCode() + ", " + textStatus + ", " + jqXHR.responseText);
+  }); 
+};
+
 function centerMap (e) {
   map.panTo(e.latlng);
 }
@@ -185,6 +208,10 @@ var visKort= function (ticket) {
       {
         text: 'Nærmeste adgangsadrese?',
         callback: nærmesteAdgangsadresse
+      },
+      {
+        text: 'Hvor?',
+        callback: hvor
       },
       {
         text: 'Kommune?',
