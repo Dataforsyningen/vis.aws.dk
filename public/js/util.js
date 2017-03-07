@@ -354,14 +354,14 @@ var visKort= function (ticket) {
         text: 'Adgangsadresse?',
         callback: nærmesteAdgangsadresse
       },
-      {
-        text: 'Bygning?',
-        callback: nærmeste('bygninger')
-      },
-      {
-        text: 'Tekniske anlæg?',
-        callback: nærmeste('tekniskeanlaeg')
-      },
+      // {
+      //   text: 'Bygning?',
+      //   callback: nærmeste('bygninger')
+      // },
+      // {
+      //   text: 'Tekniske anlæg?',
+      //   callback: nærmeste('tekniskeanlaeg')
+      // },
       {
         text: 'Bebyggelse?',
         callback: bebyggelse
