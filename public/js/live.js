@@ -73,7 +73,7 @@ $(function() {
         operation= 'oprettet';
         break;
       case 'update':
-        color= 'green';
+        color= 'orange';
         operation= 'ændret';
         break;
       case 'delete':
@@ -81,7 +81,7 @@ $(function() {
         operation= 'nedlagt';
         break;
       }
-      var marker= L.circleMarker(L.latLng(wgs84.y, wgs84.x), {color: color, fillColor: color, stroke: true, fillOpacity: 1.0, radius: 3, weight: 2, opacity: 1.0}).addTo(map);//defaultpointstyle);
+      var marker= L.circleMarker(L.latLng(wgs84.y, wgs84.x), {color: color, fillColor: color, stroke: true, fillOpacity: 1.0, radius: 4, weight: 2, opacity: 1.0}).addTo(map);//defaultpointstyle);
       var popup= marker.bindPopup(L.popup().setContent("<a target='_blank' href='https://dawa.aws.dk/replikering/adgangsadresser/haendelser?id="+data[i].data.id+"'>" + data[i].data.husnr +  ' ' + operation + "</a>"),{autoPan: true});
       if (dopopup) popup.openPopup();
       sekvensnummer= data[i].sekvensnummer;
