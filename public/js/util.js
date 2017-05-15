@@ -504,8 +504,25 @@ var visKort= function (ticket) {
     }
   }).addTo(map);
 
+  var skaermkortdaempet = L.tileLayer.wms('https://kortforsyningen.kms.dk/service?servicename=topo_skaermkort&ticket='+ticket, {
+    attribution: 'SDFE',
+    layers: 'dtk_skaermkort_daempet',
+    continuousWorld: true,
+    maxZoom: map.options.maxZoom,
+    zoom: function () {
+        var zoom = map.getZoom();
+        if (zoom < 10)
+            return 'L0' + zoom;
+        else
+            return 'L' + zoom;
+    }
+  });
+
+  //https://kortforsyningen.kms.dk/service?servicename=topo_skaermkort&client=QGIS&request=GetCapabilities&service=WMS&version=1.1.1&LOGIN=dawa&PASSWORD=AWSversion4
+
   var baselayers = {
     "Skærmkort": skaermkort,
+    "Skærmkort - dæmpet": skaermkortdaempet,
     "Flyfoto": ortofoto,
     "Højdemodel - terræn": dhmTerræn,
     "Højdemodel - overflade": dhmOverflade
