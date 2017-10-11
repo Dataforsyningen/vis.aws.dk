@@ -129,12 +129,15 @@ if (!(process.argv[2] && process.argv[3])) {
 }
 
 var usr= process.argv[2]
-  , pw= process.argv[3];
+  , pw= process.argv[3]
+  , port= process.argv[4];
+
+  if (!port) port= 5000;
+
 
 getTicket(usr,pw).then(ticket => {
-  var server = app.listen(3000, function () {
+  var server = app.listen(port, function () {
     var host = server.address().address;
-    var port = server.address().port;
 
     console.log('URL http://%s:%s', host, port);
   });
