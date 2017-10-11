@@ -32,6 +32,10 @@ $(function() {
       geojsonlayer.addTo(map);
       map.fitBounds(geojsonlayer.getBounds());      
       // L.control.search().addTo(map); 
+      var zoom= map.getZoom();
+      if (zoom >= 13) {
+        map.setZoom(11);
+      }
     })
     .fail(function( jqXHR, textStatus, errorThrown ) {
       alert(jqXHR.responseText);
