@@ -3,6 +3,8 @@ Demo web site, som kan anvendes til at vise DAWA's geografiske data på kortfors
 
 Node applikation.
 
+Install: npm install
+
 Start: node app.js {username} {password} {port}
 
 {username} er en konto hos Kortforsyningen.
