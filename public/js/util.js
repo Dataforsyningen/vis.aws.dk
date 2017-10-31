@@ -112,6 +112,9 @@ var eachFeature= function (feature, layer) {
     else if ("Bygning_id" in feature.properties) {  
       layer.bindPopup("<a target='_blank' href='https://dawa-p2.aws.dk/ois/bygninger?id="+feature.properties.Bygning_id+"'>"+anvendelseskoder[feature.properties.BYG_ANVEND_KODE] + " fra " + feature.properties.OPFOERELSE_AAR + "</a>");
     }
+    else if ("visueltcenter_x" in feature.properties) {  
+      layer.bindPopup("<a target='_blank' href='https://dawa-p2.aws.dk/stednavne/"+feature.properties.id+"'>"+feature.properties.navn + '<br/>(' +  feature.properties.hovedtype  + ', ' + feature.properties.undertype + ")</a>");
+    }
     layer.on('contextmenu', function(e) {map.contextmenu.showAt(e.latlng)});
   }
 
