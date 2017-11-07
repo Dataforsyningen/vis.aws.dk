@@ -107,13 +107,13 @@ var eachFeature= function (feature, layer) {
       layer.bindPopup("<a target='_blank' href='https://dawa.aws.dk/adgangsadresser/"+feature.properties.id+"'>"+feature.properties.vejnavn + " " + feature.properties.husnr + ", " + (feature.properties.supplerendebynavn?feature.properties.supplerendebynavn+", ":"") + feature.properties.postnr + " " + feature.properties.postnrnavn + "</a>");
     }
     else if ("Tekniskanlaeg_id" in feature.properties) {  
-      layer.bindPopup("<a target='_blank' href='https://dawa-p2.aws.dk/ois/tekniskeanlaeg?id="+feature.properties.Tekniskanlaeg_id+"'>"+klassifikationskoder[feature.properties.Klassifikation] + " etableret " + feature.properties.Etableringsaar + "</a>");
+      layer.bindPopup("<a target='_blank' href='https://dawa.aws.dk/ois/tekniskeanlaeg?id="+feature.properties.Tekniskanlaeg_id+"'>"+klassifikationskoder[feature.properties.Klassifikation] + " etableret " + feature.properties.Etableringsaar + "</a>");
     }
     else if ("Bygning_id" in feature.properties) {  
-      layer.bindPopup("<a target='_blank' href='https://dawa-p2.aws.dk/ois/bygninger?id="+feature.properties.Bygning_id+"'>"+anvendelseskoder[feature.properties.BYG_ANVEND_KODE] + " fra " + feature.properties.OPFOERELSE_AAR + "</a>");
+      layer.bindPopup("<a target='_blank' href='https://dawa.aws.dk/ois/bygninger?id="+feature.properties.Bygning_id+"'>"+anvendelseskoder[feature.properties.BYG_ANVEND_KODE] + " fra " + feature.properties.OPFOERELSE_AAR + "</a>");
     }
     else if ("visueltcenter_x" in feature.properties) {  
-      layer.bindPopup("<a target='_blank' href='https://dawa-p2.aws.dk/stednavne/"+feature.properties.id+"'>"+feature.properties.navn + '<br/>(' +  feature.properties.hovedtype  + ', ' + feature.properties.undertype + ")</a>");
+      layer.bindPopup("<a target='_blank' href='https://dawa.aws.dk/stednavne/"+feature.properties.id+"'>"+feature.properties.navn + '<br/>(' +  feature.properties.hovedtype  + ', ' + feature.properties.undertype + ")</a>");
     }
     layer.on('contextmenu', function(e) {map.contextmenu.showAt(e.latlng)});
   }
@@ -315,7 +315,7 @@ function nærmeste(ressource) {
   return function (e) {
     var options= {};
     options.data= {format: 'geojson', x: e.latlng.lng, y: e.latlng.lat, medtagugyldige: true};
-    options.url= "https://dawa-p2.aws.dk/ois/"+ressource;
+    options.url= "https://dawa.aws.dk/ois/"+ressource;
     if (corssupported()) {
       options.dataType= "json";
       options.jsonp= false;
