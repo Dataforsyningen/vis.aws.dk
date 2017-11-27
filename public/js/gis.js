@@ -151,6 +151,11 @@ $(function() {
     }
     $.ajax(options)
     .then( function ( data ) {
+      for (var i= data.features.length-1; i>=0; i--) {
+        if (data.features[i].geometry && (data.features[i].geometry.coordinates[0] == 0 || data.features[i].geometry.coordinates[1] == 0)) {
+          data.features.splice(i, 1)
+        }
+      }
       if (data.geometri || data.features && data.features.length === 0) {
         alert('Søgning gav intet resultat');
         return;
