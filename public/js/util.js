@@ -400,6 +400,20 @@ var visKort= function (ticket) {
     minZoom: 9
   });
 
+  var sognekort = L.tileLayer.wms('https://{s}.services.kortforsyningen.dk/service', {
+    service: 'WMS',
+    transparent: true,
+    servicename: 'dagi',
+    layers: 'sogn',
+    version: '1.1.0',
+    ticket: ticket,
+    styles: 'default',
+    format: 'image/png',
+    attribution: 'SDFE',
+    continuousWorld: true,
+    minZoom: map.options.minZoo
+  });
+
   var postnrkort = L.tileLayer.wms('https://{s}.services.kortforsyningen.dk/service', {
     service: 'WMS',
     transparent: true,
@@ -534,6 +548,7 @@ var visKort= function (ticket) {
 
   var overlays = {
     "Matrikelkort": matrikelkort,
+    "Sognekort": sognekort,
     "Kommunekort": kommunekort,
     "Postnummerkort": postnrkort,
     "Adressekort": adressekort
