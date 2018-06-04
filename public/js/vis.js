@@ -26,6 +26,7 @@ $(function() {
     }
     $.ajax(options)
     .then( function ( data ) {
+      if (data.type === "FeatureCollection" && data.features.length === 0) return
       var style=  getDefaultStyle(data);
       var geojsonlayer= L.geoJson(data, {style: style, onEachFeature: eachFeature, pointToLayer: pointToLayer(style)});
       lag[dataurl]= geojsonlayer;
