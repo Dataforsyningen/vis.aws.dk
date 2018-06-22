@@ -115,6 +115,12 @@ var eachFeature= function (feature, layer) {
     else if ("visueltcenter_x" in feature.properties) {  
       layer.bindPopup("<a target='_blank' href='https://dawa.aws.dk/stednavne/"+feature.properties.id+"'>"+feature.properties.navn + '<br/>(' +  feature.properties.hovedtype  + ', ' + feature.properties.undertype + ")</a>");
     }
+    else if ("administrerendekommunekode" in feature.properties) {  
+      layer.bindPopup("<a target='_blank' href='https://dawa.aws.dk/navngivneveje/"+feature.properties.id+"'>"+feature.properties.navn +  "</a>");
+    }
+    else if ("dagi_id" in feature.properties) {  
+      layer.bindPopup("<a target='_blank' href='https://dawa.aws.dk/supplerendebynavne2/"+feature.properties.dagi_id+"'>"+feature.properties.navn +  "</a>");
+    }
     layer.on('contextmenu', function(e) {map.contextmenu.showAt(e.latlng)});
   }
 
@@ -132,13 +138,14 @@ var eachFeature= function (feature, layer) {
   function getDefaultStyle(data) {
     var featureData= data;
     if (data.type !== 'Feature') {
+      if (data.features.length === 0) return defaultstyle;
       featureData= data.features[0];
     }
     var defaultstyle;
-    if (featureData.geometry && featureData.geometry.type==='Point' && featureData.properties.Tekniskanlaeg_id) {
+    if (featureData.properties.Tekniskanlaeg_id && featureData.geometry && featureData.geometry.type==='Point') {
       defaultstyle= tekniskeanlaegpointstyle;
     }
-    else if (featureData.geometry && featureData.geometry.type==='Point' && featureData.properties.Bygning_id) {
+    else if (featureData.properties.Bygning_id && featureData.geometry && featureData.geometry.type==='Point') {
       defaultstyle= bygningpointstyle;
     }
     else if (featureData.geometry && featureData.geometry.type==='Point') {
