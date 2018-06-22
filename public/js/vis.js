@@ -30,7 +30,15 @@ $(function() {
       var geojsonlayer= L.geoJson(data, {style: style, onEachFeature: eachFeature, pointToLayer: pointToLayer(style)});
       lag[dataurl]= geojsonlayer;
       geojsonlayer.addTo(map);
-      map.fitBounds(geojsonlayer.getBounds());      
+      map.fitBounds(geojsonlayer.getBounds());
+
+      if (data.type !== 'Feature') {
+        data= data.features[0];
+      }
+      if (data.properties.visueltcenter_x && data.properties.visueltcenter_y) {      
+        var marker= L.circleMarker(L.latLng(data.properties.visueltcenter_y, data.properties.visueltcenter_x), {color: style.color, fillColor: style.color, stroke: true, fillOpacity: 1.0, radius: 2, weight: 2, opacity: 1.0}).addTo(map);
+      }
+           
       // L.control.search().addTo(map); 
       var zoom= map.getZoom();
       if (zoom >= 13) {
