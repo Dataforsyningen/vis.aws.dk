@@ -5,7 +5,7 @@ $(function() {
   info.onAdd = function (map) {
       this._div = L.DomUtil.create('div', 'info'); 
       this._div.innerHTML = '<h3>Adgangsadresser oprettet/nedlagt</h3>'+'<p>' + fra.format()  + ' - ' + til.format() + '</p>' +
-        "<p>Et eksempel på brug af <a href='http://dawa.aws.dk/replikeringdok'>DAWA's replikerings API</a></p>";
+        "<p>Et eksempel på brug af <a href='https://api.dataforsyningen.dk/replikeringdok'>DAWA's replikerings API</a></p>";
       //this.update();
       return this._div;
   };
@@ -27,7 +27,7 @@ $(function() {
   var hentData= function() {
     var options= {};
     options.data= {tidspunktfra: fra.utc().toISOString(), tidspunkttil: til.utc().toISOString()};
-    options.url= encode('https://dawa.aws.dk/replikering/adgangsadresser/haendelser');
+    options.url= encode('https://api.dataforsyningen.dk/replikering/adgangsadresser/haendelser');
     if (corssupported()) {
       options.dataType= "json";
       options.jsonp= false;
@@ -44,7 +44,7 @@ $(function() {
   var hentHændelser= function(fra, til) {
     var options= {};
     options.data= {sekvensnummerfra: fra, sekvensnummertil: til};
-    options.url= encode('https://dawa.aws.dk/replikering/adgangsadresser/haendelser');
+    options.url= encode('https://api.dataforsyningen.dk/replikering/adgangsadresser/haendelser');
     if (corssupported()) {
       options.dataType= "json";
       options.jsonp= false;
@@ -82,7 +82,7 @@ $(function() {
         break;
       }
       var marker= L.circleMarker(L.latLng(wgs84.y, wgs84.x), {color: color, fillColor: color, stroke: true, fillOpacity: 1.0, radius: 4, weight: 2, opacity: 1.0}).addTo(map);//defaultpointstyle);
-      var popup= marker.bindPopup(L.popup().setContent("<a target='_blank' href='https://dawa.aws.dk/replikering/adgangsadresser/haendelser?id="+data[i].data.id+"'>" + data[i].data.husnr +  ' ' + operation + "</a>"),{autoPan: true});
+      var popup= marker.bindPopup(L.popup().setContent("<a target='_blank' href='https://api.dataforsyningen.dk/replikering/adgangsadresser/haendelser?id="+data[i].data.id+"'>" + data[i].data.husnr +  ' ' + operation + "</a>"),{autoPan: true});
       if (dopopup) popup.openPopup();
       sekvensnummer= data[i].sekvensnummer;
     } 
@@ -100,7 +100,7 @@ $(function() {
     hentData();
     setInterval(function () {
       var options= {};
-      options.url= encode('https://dawa.aws.dk/replikering/senestesekvensnummer');
+      options.url= encode('https://api.dataforsyningen.dk/replikering/senestesekvensnummer');
       if (corssupported()) {
         options.dataType= "json";
         options.jsonp= false;
