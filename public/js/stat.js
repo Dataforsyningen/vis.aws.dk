@@ -5,7 +5,7 @@ $(function() {
   info.onAdd = function (map) {
       this._div = L.DomUtil.create('div', 'info'); 
       this._div.innerHTML = '<h3>Adgangsadresser oprettet/nedlagt</h3>'+'<p>' + fra.format('DD.MM.YYYY')  + ' - ' + til.format('DD.MM.YYYY') + '</p>' +
-        "<p>Et eksempel på brug af <a href='http://dawa.aws.dk/replikeringdok'>DAWA's replikerings API</a></p>";
+        "<p>Et eksempel på brug af <a href='https://api.dataforsyningen.dk/replikeringdok'>DAWA's replikerings API</a></p>";
       //this.update();
       return this._div;
   };
@@ -42,7 +42,7 @@ $(function() {
   var visData= function() {
     var options= {};
     options.data= {tidspunktfra: fra.utc().toISOString(), tidspunkttil: tilplus.utc().toISOString()};
-    options.url= encode('https://dawa.aws.dk/replikering/adgangsadresser/haendelser');
+    options.url= encode('https://api.dataforsyningen.dk/replikering/adgangsadresser/haendelser');
     if (corssupported()) {
       options.dataType= "json";
       options.jsonp= false;
@@ -68,7 +68,7 @@ $(function() {
           break;
         }
         var marker= L.circleMarker(L.latLng(wgs84.y, wgs84.x), {color: color, fillColor: color, stroke: false, fillOpacity: 1.0, radius: 3}).addTo(map);//defaultpointstyle);
-        marker.bindPopup("<a target='_blank' href='https://dawa.aws.dk/replikering/adgangsadresser/haendelser?id="+data[i].data.id+"'>" + data[i].data.id + "'s hændelser </a>");
+        marker.bindPopup("<a target='_blank' href='https://api.dataforsyningen.dk/replikering/adgangsadresser/haendelser?id="+data[i].data.id+"'>" + data[i].data.id + "'s hændelser </a>");
       }  
     })
     .fail(function( jqXHR, textStatus, errorThrown ) {
