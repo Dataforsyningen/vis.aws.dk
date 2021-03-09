@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
 function getTicket(usr,pw) {
   return new Promise((resolve, reject) => {
     var options= {};
-    options.url='http://kortforsyningen.kms.dk/service';
+    options.url='https://api.dataforsyningen.dk/service';
     options.qs= {};
     options.qs.service= 'META';
     options.qs.request= 'GetTicket';
@@ -37,7 +37,7 @@ function getTicket(usr,pw) {
       }
     })
     .catch((err) => {
-      reject('fejl i request af kortforsyningen: ' + err);
+      reject('fejl i request af api.dataforsyningen: ' + err);
     });
   });
 }
