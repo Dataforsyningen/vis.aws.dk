@@ -6,11 +6,12 @@ $(function() {
  var parser = document.createElement('a');
   parser.href = window.location.href;
   if (parser.host.indexOf('localhost') === 0) {
-    parser.host= 'vis.aws.dk:80'; 
+    parser.host= 'vis.dataforsyningen.dk:80'; 
   }
   let miljø= getQueryVariable('m');
   if (!miljø) miljø= 'dawa';
-  parser.host= parser.host.replace('vis',miljø); 
+  //url.host= url.host.replace('vis',miljø);
+  url.host = 'api.dataforsyningen.dk';
   var dataurl= parser.href; 
 
   var visData= function() {
