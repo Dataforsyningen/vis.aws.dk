@@ -101,25 +101,25 @@ var eachFeature= function (feature, layer) {
       layer.bindPopup(feature.properties.nr + " " + feature.properties.navn);
     }
     else if ("vejnavn" in feature.properties && "husnr" in feature.properties && "etage" in feature.properties) {  
-      layer.bindPopup("<a target='_blank' href='https://dawa.aws.dk/adresser/"+feature.properties.id+"'>"+feature.properties.vejnavn + " " + feature.properties.husnr + ", " + (feature.properties.supplerendebynavn?feature.properties.supplerendebynavn+", ":"") + feature.properties.postnr + " " + feature.properties.postnrnavn + "</a>");
+      layer.bindPopup("<a target='_blank' href='https://api.dataforsyningen.dk/adresser/"+feature.properties.id+"'>"+feature.properties.vejnavn + " " + feature.properties.husnr + ", " + (feature.properties.supplerendebynavn?feature.properties.supplerendebynavn+", ":"") + feature.properties.postnr + " " + feature.properties.postnrnavn + "</a>");
     }
     else if ("vejnavn" in feature.properties && "husnr" in feature.properties) {  
-      layer.bindPopup("<a target='_blank' href='https://dawa.aws.dk/adgangsadresser/"+feature.properties.id+"'>"+feature.properties.vejnavn + " " + feature.properties.husnr + ", " + (feature.properties.supplerendebynavn?feature.properties.supplerendebynavn+", ":"") + feature.properties.postnr + " " + feature.properties.postnrnavn + "</a>");
+      layer.bindPopup("<a target='_blank' href='https://api.dataforsyningen.dk/adgangsadresser/"+feature.properties.id+"'>"+feature.properties.vejnavn + " " + feature.properties.husnr + ", " + (feature.properties.supplerendebynavn?feature.properties.supplerendebynavn+", ":"") + feature.properties.postnr + " " + feature.properties.postnrnavn + "</a>");
     }
     else if ("Tekniskanlaeg_id" in feature.properties) {  
-      layer.bindPopup("<a target='_blank' href='https://dawa.aws.dk/ois/tekniskeanlaeg?id="+feature.properties.Tekniskanlaeg_id+"'>"+klassifikationskoder[feature.properties.Klassifikation] + " etableret " + feature.properties.Etableringsaar + "</a>");
+      layer.bindPopup("<a target='_blank' href='https://api.dataforsyningen.dk/ois/tekniskeanlaeg?id="+feature.properties.Tekniskanlaeg_id+"'>"+klassifikationskoder[feature.properties.Klassifikation] + " etableret " + feature.properties.Etableringsaar + "</a>");
     }
     else if ("Bygning_id" in feature.properties) {  
-      layer.bindPopup("<a target='_blank' href='https://dawa.aws.dk/ois/bygninger?id="+feature.properties.Bygning_id+"'>"+anvendelseskoder[feature.properties.BYG_ANVEND_KODE] + " fra " + feature.properties.OPFOERELSE_AAR + "</a>");
+      layer.bindPopup("<a target='_blank' href='https://api.dataforsyningen.dk/ois/bygninger?id="+feature.properties.Bygning_id+"'>"+anvendelseskoder[feature.properties.BYG_ANVEND_KODE] + " fra " + feature.properties.OPFOERELSE_AAR + "</a>");
     }
     else if ("visueltcenter_x" in feature.properties) {  
-      layer.bindPopup("<a target='_blank' href='https://dawa.aws.dk/stednavne/"+feature.properties.id+"'>"+feature.properties.navn + '<br/>(' +  feature.properties.hovedtype  + ', ' + feature.properties.undertype + ")</a>");
+      layer.bindPopup("<a target='_blank' href='https://api.dataforsyningen.dk/stednavne/"+feature.properties.id+"'>"+feature.properties.navn + '<br/>(' +  feature.properties.hovedtype  + ', ' + feature.properties.undertype + ")</a>");
     }
     else if ("administrerendekommunekode" in feature.properties) {  
-      layer.bindPopup("<a target='_blank' href='https://dawa.aws.dk/navngivneveje/"+feature.properties.id+"'>"+feature.properties.navn +  "</a>");
+      layer.bindPopup("<a target='_blank' href='https://api.dataforsyningen.dk/navngivneveje/"+feature.properties.id+"'>"+feature.properties.navn +  "</a>");
     }
     else if ("dagi_id" in feature.properties) {  
-      layer.bindPopup("<a target='_blank' href='https://dawa.aws.dk/supplerendebynavne2/"+feature.properties.dagi_id+"'>"+feature.properties.navn +  "</a>");
+      layer.bindPopup("<a target='_blank' href='https://api.dataforsyningen.dk/supplerendebynavne2/"+feature.properties.dagi_id+"'>"+feature.properties.navn +  "</a>");
     }
     layer.on('contextmenu', function(e) {map.contextmenu.showAt(e.latlng)});
   }
@@ -175,7 +175,7 @@ function visKoordinater (e) {
 function visKommune (e) {
   var options= {};
   options.data= {x: e.latlng.lng, y: e.latlng.lat};
-  options.url= "https://dawa.aws.dk/kommuner/reverse";
+  options.url= "https://api.dataforsyningen.dk/kommuner/reverse";
   if (corssupported()) {
     options.dataType= "json";
     options.jsonp= false;
@@ -198,7 +198,7 @@ function visKommune (e) {
 function nærmesteAdgangsadresse(e) {
   var options= {};
   options.data= {format: 'geojson', x: e.latlng.lng, y: e.latlng.lat, medtagugyldige: true};
-  options.url= "https://dawa.aws.dk/adgangsadresser/reverse";
+  options.url= "https://api.dataforsyningen.dk/adgangsadresser/reverse";
   if (corssupported()) {
     options.dataType= "json";
     options.jsonp= false;
@@ -221,7 +221,7 @@ function nærmesteAdgangsadresse(e) {
 function bebyggelse(e) {
   var options= {};
   options.data= {x: e.latlng.lng, y: e.latlng.lat};
-  options.url= "https://dawa.aws.dk/bebyggelser";
+  options.url= "https://api.dataforsyningen.dk/bebyggelser";
   if (corssupported()) {
     options.dataType= "json";
     options.jsonp= false;
@@ -322,7 +322,7 @@ function nærmeste(ressource) {
   return function (e) {
     var options= {};
     options.data= {format: 'geojson', x: e.latlng.lng, y: e.latlng.lat, medtagugyldige: true};
-    options.url= "https://dawa.aws.dk/ois/"+ressource;
+    options.url= "https://api.dataforsyningen.dk/ois/"+ressource;
     if (corssupported()) {
       options.dataType= "json";
       options.jsonp= false;
@@ -461,8 +461,8 @@ var visKort= function (ticket) {
     // SLD: 'http://www.jo-informatik.dk/sld/Standard_kk.xml'
   });
 
-  // var historisk1928 = L.tileLayer('http://kortforsyningen.kms.dk/topo20_hoeje_maalebordsblade?ignoreillegallayers=TRUE&Layer=dtk_hoeje_maalebordsblad&transparent=FALSE&REQUEST=GetTile&TileMatrixSet=View1&TileMatrix={zoom}&TileRow={y}&TileCol={x}&SERVICE=WMS&VERSION=1.1.1&LAYERS=dtk_hoeje_maalebordsblade&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&SRS=EPSG:25832&ticket=' + ticket, {
-  //   attribution: 'Data</a> fra <a href="http://dawa.aws.dk">DAWA</a> | Map data &copy;  Styrelsen for Dataforsyning og Effektivisering',
+  // var historisk1928 = L.tileLayer('https://api.dataforsyningen.dk/topo20_hoeje_maalebordsblade?ignoreillegallayers=TRUE&Layer=dtk_hoeje_maalebordsblad&transparent=FALSE&REQUEST=GetTile&TileMatrixSet=View1&TileMatrix={zoom}&TileRow={y}&TileCol={x}&SERVICE=WMS&VERSION=1.1.1&LAYERS=dtk_hoeje_maalebordsblade&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&SRS=EPSG:25832&ticket=' + ticket, {
+  //   attribution: 'Data</a> fra <a href="https://api.dataforsyningen.dk">DAWA</a> | Map data &copy;  Styrelsen for Dataforsyning og Effektivisering',
   //   continuousWorld: true,
   //   maxZoom: map.options.maxZoom,
   //   zoom: function () {
@@ -475,7 +475,7 @@ var visKort= function (ticket) {
   // });
 
   var ortofoto = L.tileLayer('https://{s}.services.kortforsyningen.dk/orto_foraar?ticket=' + ticket + '&request=GetTile&version=1.0.0&service=WMTS&Layer=orto_foraar&style=default&format=image/jpeg&TileMatrixSet=View1&TileMatrix={zoom}&TileRow={y}&TileCol={x}', {
-    attribution: 'Data</a> fra <a href="http://dawa.aws.dk">DAWA</a> | Map data &copy;  <a href="http://sdfe.dk">SDFE</a>',
+    attribution: 'Data</a> fra <a href="https://api.dataforsyningen.dk">DAWA</a> | Map data &copy;  <a href="https://sdfe.dk">SDFE</a>',
     continuousWorld: true,
     maxZoom: map.options.maxZoom,
     zoom: function () {
@@ -516,7 +516,7 @@ var visKort= function (ticket) {
   });
 
   var skaermkort = L.tileLayer('https://{s}.services.kortforsyningen.dk/topo_skaermkort?ticket=' + ticket + '&request=GetTile&version=1.0.0&service=WMTS&Layer=dtk_skaermkort&style=default&format=image/jpeg&TileMatrixSet=View1&TileMatrix={zoom}&TileRow={y}&TileCol={x}', {
-    attribution: 'Data</a> fra <a href="https://dawa.aws.dk">DAWA</a> | Map data &copy;  <a href="http://sdfe.dk">SDFE</a>',
+    attribution: 'Data</a> fra <a href="https://api.dataforsyningen.dk">DAWA</a> | Map data &copy;  <a href="https://sdfe.dk">SDFE</a>',
     continuousWorld: true,
     maxZoom: map.options.maxZoom,
     zoom: function () {
@@ -591,6 +591,6 @@ var visKort= function (ticket) {
 
 // var visOSMKort= function() {
 //   map = L.map('map',{zoom: 13});
-//   var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Data</a> fra <a href="http://dawa.aws.dk">DAWA</a> | Map data &copy;  Styrelsen for Dataforsyning og Effektivisering'});
+//   var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Data</a> fra <a href="https://api.dataforsyningen.dk">DAWA</a> | Map data &copy;  Styrelsen for Dataforsyning og Effektivisering'});
 //   osm.addTo(map);
 // }
