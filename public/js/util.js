@@ -462,7 +462,7 @@ var visKort= function (ticket) {
   });
 
   // var historisk1928 = L.tileLayer('https://api.dataforsyningen.dk/topo20_hoeje_maalebordsblade?ignoreillegallayers=TRUE&Layer=dtk_hoeje_maalebordsblad&transparent=FALSE&REQUEST=GetTile&TileMatrixSet=View1&TileMatrix={zoom}&TileRow={y}&TileCol={x}&SERVICE=WMS&VERSION=1.1.1&LAYERS=dtk_hoeje_maalebordsblade&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&SRS=EPSG:25832&ticket=' + ticket, {
-  //   attribution: 'Data</a> fra <a href="https://api.dataforsyningen.dk">DAWA</a> | Map data &copy;  Styrelsen for Dataforsyning og Effektivisering',
+  //   attribution: 'Data</a> fra <a href="https://dawadocs.dataforsyningen.dk">DAWA</a> | Map data &copy;  Styrelsen for Dataforsyning og Effektivisering',
   //   continuousWorld: true,
   //   maxZoom: map.options.maxZoom,
   //   zoom: function () {
@@ -475,7 +475,7 @@ var visKort= function (ticket) {
   // });
 
   var ortofoto = L.tileLayer('https://{s}.services.kortforsyningen.dk/orto_foraar?ticket=' + ticket + '&request=GetTile&version=1.0.0&service=WMTS&Layer=orto_foraar&style=default&format=image/jpeg&TileMatrixSet=View1&TileMatrix={zoom}&TileRow={y}&TileCol={x}', {
-    attribution: 'Data</a> fra <a href="https://api.dataforsyningen.dk">DAWA</a> | Map data &copy;  <a href="https://sdfe.dk">SDFE</a>',
+    attribution: 'Data</a> fra <a href="https://dawadocs.dataforsyningen.dk">DAWA</a> | Map data &copy;  <a href="https://sdfe.dk">SDFE</a>',
     continuousWorld: true,
     maxZoom: map.options.maxZoom,
     zoom: function () {
@@ -487,7 +487,7 @@ var visKort= function (ticket) {
     }
   });
 
-  var dhmTerræn = L.tileLayer.wms('https://kortforsyningen.kms.dk/dhm?ticket='+ticket, {
+  var dhmTerræn = L.tileLayer.wms('https://api.dataforsyningen.dk/dhm?ticket='+ticket, {
     attribution: 'Geodatastyrelsen',
     layers: 'dhm_terraen_skyggekort',
     continuousWorld: true,
@@ -501,7 +501,7 @@ var visKort= function (ticket) {
     }
   });
 
-  var dhmOverflade = L.tileLayer.wms('https://kortforsyningen.kms.dk/dhm?ticket='+ticket, {
+  var dhmOverflade = L.tileLayer.wms('https://api.dataforsyningen.dk/dhm?ticket='+ticket, {
     attribution: 'Geodatastyrelsen',
     layers: 'dhm_overflade_skyggekort',
     continuousWorld: true,
@@ -516,7 +516,7 @@ var visKort= function (ticket) {
   });
 
   var skaermkort = L.tileLayer('https://{s}.services.kortforsyningen.dk/topo_skaermkort?ticket=' + ticket + '&request=GetTile&version=1.0.0&service=WMTS&Layer=dtk_skaermkort&style=default&format=image/jpeg&TileMatrixSet=View1&TileMatrix={zoom}&TileRow={y}&TileCol={x}', {
-    attribution: 'Data</a> fra <a href="https://api.dataforsyningen.dk">DAWA</a> | Map data &copy;  <a href="https://sdfe.dk">SDFE</a>',
+    attribution: 'Data</a> fra <a href="https://dawadocs.dataforsyningen.dk">DAWA</a> | Map data &copy;  <a href="https://sdfe.dk">SDFE</a>',
     continuousWorld: true,
     maxZoom: map.options.maxZoom,
     zoom: function () {
@@ -528,7 +528,7 @@ var visKort= function (ticket) {
     }
   }).addTo(map);
 
-  var skaermkortdaempet = L.tileLayer.wms('https://kortforsyningen.kms.dk/service?servicename=topo_skaermkort&ticket='+ticket, {
+  var skaermkortdaempet = L.tileLayer.wms('https://api.dataforsyningen.dk/topo_skaermkort?ticket='+ticket, {
     attribution: 'SDFE',
     layers: 'dtk_skaermkort_daempet',
     continuousWorld: true,
@@ -542,7 +542,7 @@ var visKort= function (ticket) {
     }
   });
 
-  //https://kortforsyningen.kms.dk/service?servicename=topo_skaermkort&client=QGIS&request=GetCapabilities&service=WMS&version=1.1.1&LOGIN=dawa&PASSWORD=AWSversion4
+  //https://api.dataforsyningen.dk/topo_skaermkort?client=QGIS&request=GetCapabilities&service=WMS&version=1.1.1&LOGIN=dawa&PASSWORD=AWSversion4
 
   var baselayers = {
     "Skærmkort": skaermkort,
@@ -591,6 +591,6 @@ var visKort= function (ticket) {
 
 // var visOSMKort= function() {
 //   map = L.map('map',{zoom: 13});
-//   var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Data</a> fra <a href="https://api.dataforsyningen.dk">DAWA</a> | Map data &copy;  Styrelsen for Dataforsyning og Effektivisering'});
+//   var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Data</a> fra <a href="https://dawadocs.dataforsyningen.dk">DAWA</a> | Map data &copy;  Styrelsen for Dataforsyning og Effektivisering'});
 //   osm.addTo(map);
 // }
