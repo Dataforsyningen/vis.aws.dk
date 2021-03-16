@@ -393,10 +393,9 @@ var visKort= function (ticket) {
     [54.559132, 8.074720]
   ]);
 
-  var matrikelkort = L.tileLayer.wms('https://{s}.services.kortforsyningen.dk/service', {
+  var matrikelkort = L.tileLayer.wms('https://api.dataforsyningen.dk/mat', {
     service: 'WMS',
     transparent: true,
-    servicename: 'mat',
     layers: 'Centroide,MatrikelSkel,OptagetVej',
     version: '1.1.0',
     ticket: ticket,
@@ -407,10 +406,9 @@ var visKort= function (ticket) {
     minZoom: 9
   });
 
-  var sognekort = L.tileLayer.wms('https://{s}.services.kortforsyningen.dk/service', {
+  var sognekort = L.tileLayer.wms('https://api.dataforsyningen.dk/dagi', {
     service: 'WMS',
     transparent: true,
-    servicename: 'dagi',
     layers: 'sogn',
     version: '1.1.0',
     ticket: ticket,
@@ -421,10 +419,9 @@ var visKort= function (ticket) {
     minZoom: map.options.minZoo
   });
 
-  var postnrkort = L.tileLayer.wms('https://{s}.services.kortforsyningen.dk/service', {
+  var postnrkort = L.tileLayer.wms('https://api.dataforsyningen.dk/dagi', {
     service: 'WMS',
     transparent: true,
-    servicename: 'dagi',
     layers: 'postdistrikt',
     version: '1.1.0',
     ticket: ticket,
@@ -435,10 +432,9 @@ var visKort= function (ticket) {
     minZoom: map.options.minZoo
   });
 
-  var kommunekort = L.tileLayer.wms('https://{s}.services.kortforsyningen.dk/service', {
+  var kommunekort = L.tileLayer.wms('https://api.dataforsyningen.dk/dagi', {
     service: 'WMS',
     transparent: true,
-    servicename: 'dagi',
     layers: 'kommune',
     version: '1.1.0',
     ticket: ticket,
@@ -474,7 +470,7 @@ var visKort= function (ticket) {
   //   }
   // });
 
-  var ortofoto = L.tileLayer('https://{s}.services.kortforsyningen.dk/orto_foraar?ticket=' + ticket + '&request=GetTile&version=1.0.0&service=WMTS&Layer=orto_foraar&style=default&format=image/jpeg&TileMatrixSet=View1&TileMatrix={zoom}&TileRow={y}&TileCol={x}', {
+  var ortofoto = L.tileLayer('https://api.dataforsyningen.dk/orto_foraar?ticket=' + ticket + '&request=GetTile&version=1.0.0&service=WMTS&Layer=orto_foraar&style=default&format=image/jpeg&TileMatrixSet=View1&TileMatrix={zoom}&TileRow={y}&TileCol={x}', {
     attribution: 'Data</a> fra <a href="https://dawadocs.dataforsyningen.dk">DAWA</a> | Map data &copy;  <a href="https://sdfe.dk">SDFE</a>',
     continuousWorld: true,
     maxZoom: map.options.maxZoom,
@@ -515,7 +511,7 @@ var visKort= function (ticket) {
     }
   });
 
-  var skaermkort = L.tileLayer('https://{s}.services.kortforsyningen.dk/topo_skaermkort?ticket=' + ticket + '&request=GetTile&version=1.0.0&service=WMTS&Layer=dtk_skaermkort&style=default&format=image/jpeg&TileMatrixSet=View1&TileMatrix={zoom}&TileRow={y}&TileCol={x}', {
+  var skaermkort = L.tileLayer('https://api.dataforsyningen.dk/topo_skaermkort?ticket=' + ticket + '&request=GetTile&version=1.0.0&service=WMTS&Layer=dtk_skaermkort&style=default&format=image/jpeg&TileMatrixSet=View1&TileMatrix={zoom}&TileRow={y}&TileCol={x}', {
     attribution: 'Data</a> fra <a href="https://dawadocs.dataforsyningen.dk">DAWA</a> | Map data &copy;  <a href="https://sdfe.dk">SDFE</a>',
     continuousWorld: true,
     maxZoom: map.options.maxZoom,
